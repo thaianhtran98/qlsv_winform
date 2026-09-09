@@ -23,6 +23,7 @@ namespace QuanLySV.Controls
 		public UcList()
 		{
 			InitializeComponent();
+			ConfigGridView();
 			DgvListSV.CellContentClick += EditStudent;
 			DgvListSV.CellContentClick += DeleteStudent;
 			LoadStudent();
@@ -116,7 +117,8 @@ namespace QuanLySV.Controls
 			CbxStatus.DisplayMember = "Text";   
 			CbxStatus.ValueMember = "Value";   
 			CbxStatus.DataSource = listStatus;
-			
+			CbxStatus.SelectedValue = Student.ACTIVE;
+
 			var listSex = new List<object>
 			{
 				new { Value = -1, Text = "Tất cả" },
@@ -150,5 +152,48 @@ namespace QuanLySV.Controls
 		{
 			FilterStudents();
 		}
+
+		private void ConfigGridView()
+		{
+			// 1. Xử lý vùng trống phía dưới: Đổi nền xám thành màu trắng cho đẹp mắt, hiện đại
+			DgvListSV.BackgroundColor = Color.White;
+			DgvListSV.BorderStyle = BorderStyle.None;
+			// 2. Cấu hình các cột cố định (giữ nguyên kích thước chuẩn, không bị dãn thô khi fullscreen)
+			SetFixedColumn(DgvListSV.Columns["MSSV"], 65);
+			SetFixedColumn(DgvListSV.Columns["GgvSex"], 70);
+			SetFixedColumn(DgvListSV.Columns["GgvBirthOfDate"], 90);
+			SetFixedColumn(DgvListSV.Columns["GgvVneId"], 100);
+			SetFixedColumn(DgvListSV.Columns["GgvDateOfIssue"], 90);
+			SetFixedColumn(DgvListSV.Columns["GgvNumberPhone"], 100);
+			SetFixedColumn(DgvListSV.Columns["GgvStatus"], 115);
+			SetFixedColumn(DgvListSV.Columns["GgvActionEdit"], 60);
+			SetFixedColumn(DgvListSV.Columns["GgvActionDelete"], 60);
+			// 3. Cấu hình các cột dữ liệu dài: Tự động dãn (Fill) khi fullscreen,
+			//    nhưng khi màn hình nhỏ sẽ không bao giờ co nhỏ hơn MinimumWidth
+			SetFillColumn(DgvListSV.Columns["GgvName"], 130, 120);            // Họ và tên
+			SetFillColumn(DgvListSV.Columns["GgvBirthLocal"], 100, 100);       // Quê quán
+			SetFillColumn(DgvListSV.Columns["GgvLocalOfIssue"], 100, 100);     // Nơi cấp
+			SetFillColumn(DgvListSV.Columns["GgvLocal"], 100, 100);            // Tỉnh/Thành phố
+			SetFillColumn(DgvListSV.Columns["GgvPlaceOfResidence"], 180, 180); // Địa chỉ thường trú (dãn nhiều nhất)
+		}
+
+		// Hàm hỗ trợ cột cố định
+		private void SetFixedColumn(DataGridViewColumn col, int width)
+		{
+			if (col == null) return;
+			col.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+			col.Width = width;
+			col.MinimumWidth = width;
+		}
+
+		// Hàm hỗ trợ cột co dãn linh hoạt
+		private void SetFillColumn(DataGridViewColumn col, int minWidth, float fillWeight)
+		{
+			if (col == null) return;
+			col.MinimumWidth = minWidth; // Giữ nguyên độ rộng này khi ở màn hình nhỏ
+			col.FillWeight = fillWeight; // Tỉ lệ chia sẻ khoảng trống khi Fullscreen
+			col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+		}
+
 	}
 }

@@ -115,20 +115,20 @@
 			// 
 			this.DgvListSV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.DgvListSV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.MSSV,
-            this.GgvName,
-            this.GgvSex,
-            this.GgvBirthOfDate,
-            this.GgvBirthLocal,
-            this.GgvVneId,
-            this.GgvDateOfIssue,
-            this.GgvLocalOfIssue,
-            this.GgvLocal,
-            this.GgvPlaceOfResidence,
-            this.GgvNumberPhone,
-            this.GgvStatus,
-            this.GgvActionEdit,
-            this.GgvActionDelete});
+			  this.MSSV,
+			  this.GgvName,
+			  this.GgvSex,
+			  this.GgvBirthOfDate,
+			  this.GgvBirthLocal,
+			  this.GgvVneId,
+			  this.GgvDateOfIssue,
+			  this.GgvLocalOfIssue,
+			  this.GgvLocal,
+			  this.GgvPlaceOfResidence,
+			  this.GgvNumberPhone,
+			  this.GgvStatus,
+			  this.GgvActionEdit,
+			  this.GgvActionDelete});
 			this.DgvListSV.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.DgvListSV.Location = new System.Drawing.Point(0, 0);
 			this.DgvListSV.Name = "DgvListSV";

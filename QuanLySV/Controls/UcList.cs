@@ -54,10 +54,17 @@ namespace QuanLySV.Controls
 					student.PlaceOfResidence,
 					student.NumberPhone,
 					student.Status == Student.ACTIVE ? "Đang hoạt động" : "Ngưng hoạt động",
-					"Sửa",
-					"Xóa"
+					student.Status == Student.ACTIVE ? "Sửa" : null,
+            			student.Status == Student.ACTIVE ? "Xóa" : null
 				);
 
+				if (student.Status != Student.ACTIVE)
+				{
+					DgvListSV.Rows[rowIndex].Cells[COL_EDIT] = new DataGridViewTextBoxCell();
+					DgvListSV.Rows[rowIndex].Cells[COL_EDIT].ReadOnly = true;
+                         DgvListSV.Rows[rowIndex].Cells[COL_DELETE] = new DataGridViewTextBoxCell();
+					DgvListSV.Rows[rowIndex].Cells[COL_DELETE].ReadOnly = true;
+                    }
 				DgvListSV.Rows[rowIndex].Tag = student;
 			}
 		}
@@ -67,26 +74,12 @@ namespace QuanLySV.Controls
 			if (e.RowIndex >= 0 && e.ColumnIndex == COL_EDIT)
 			{
 				Student student = DgvListSV.Rows[e.RowIndex].Tag as Student;
-				if (student != null)
+				if (student != null && student.Status == Student.ACTIVE)
 				{
 					Form1 mainForm = this.FindForm() as Form1;
 					if (mainForm != null)
 					{
 						mainForm.ShowUc(new UcFormEdit(student.StudentId, true));
-					}
-					else if (this.Parent != null)
-					{
-						Control parentContainer = this.Parent;
-						while (parentContainer.Controls.Count > 0)
-						{
-							var oldControl = parentContainer.Controls[0];
-							parentContainer.Controls.RemoveAt(0);
-							oldControl.Dispose();
-						}
-
-						UcFormEdit ucFormEdit = new UcFormEdit(student.StudentId, true);
-						ucFormEdit.Dock = DockStyle.Fill;
-						parentContainer.Controls.Add(ucFormEdit);
 					}
 				}
 			}
@@ -97,12 +90,12 @@ namespace QuanLySV.Controls
 			if (e.RowIndex >= 0 && e.ColumnIndex == COL_DELETE)
 			{
 				Student student = DgvListSV.Rows[e.RowIndex].Tag as Student;
-				if (student != null)
+				if (student != null && student.Status == Student.ACTIVE)
 				{
 					if (MessageBox.Show("Bạn có chắc chắn muốn xóa sinh viên này?", "Xác nhận xóa", MessageBoxButtons.YesNo) == DialogResult.Yes)
 					{
 						StudentService.DeleteStudent(student.StudentId);
-						LoadStudent();
+						FilterStudents();
 					}
 				}
 			}
@@ -158,6 +151,9 @@ namespace QuanLySV.Controls
 
 		private void ConfigGridView()
 		{
+			DgvListSV.AllowUserToAddRows = false;
+			DgvListSV.AllowUserToDeleteRows = false;
+			DgvListSV.AllowUserToResizeRows = false;
 			DgvListSV.BackgroundColor = Color.White;
 			DgvListSV.BorderStyle = BorderStyle.None;
 			_GridViewHelper.SetFixedColumn(DgvListSV.Columns["MSSV"], 65);

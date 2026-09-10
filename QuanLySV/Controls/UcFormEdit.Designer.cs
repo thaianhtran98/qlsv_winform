@@ -28,7 +28,6 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.BtnSave = new System.Windows.Forms.Button();
 			this.MskNumberPhone = new System.Windows.Forms.MaskedTextBox();
@@ -54,9 +53,7 @@
 			this.TbxName = new System.Windows.Forms.TextBox();
 			this.LblBirthOfDate = new System.Windows.Forms.Label();
 			this.LblName = new System.Windows.Forms.Label();
-			this.ErrorProFormEdit = new System.Windows.Forms.ErrorProvider(this.components);
 			this.panel1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.ErrorProFormEdit)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// panel1
@@ -288,10 +285,6 @@
 			this.LblName.TabIndex = 26;
 			this.LblName.Text = "Họ và tên:";
 			// 
-			// ErrorProFormEdit
-			// 
-			this.ErrorProFormEdit.ContainerControl = this;
-			// 
 			// UcFormEdit
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -302,7 +295,6 @@
 			this.Size = new System.Drawing.Size(545, 398);
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.ErrorProFormEdit)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -334,6 +326,5 @@
 		private System.Windows.Forms.TextBox TbxName;
 		private System.Windows.Forms.Label LblBirthOfDate;
 		private System.Windows.Forms.Label LblName;
-		private System.Windows.Forms.ErrorProvider ErrorProFormEdit;
 	}
 }

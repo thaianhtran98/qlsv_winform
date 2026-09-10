@@ -10,5 +10,5 @@
     LOCAL VARCHAR(255),
     PLACEOFRESIDENCE VARCHAR(255),
     NUMBERPHONE VARCHAR(15),
-    ACTIVE INT             -- 1 (active), 0 (inactive)
+    STATUS INT             -- 1 (active), 0 (inactive)
 );

@@ -15,7 +15,6 @@ namespace QuanLySV
 	public partial class Form1 : Form
 	{
 		private UserControl UserControlCurrent = null;
-		private Button _selectedNavigationButton;
 
 		public Form1()
 		{

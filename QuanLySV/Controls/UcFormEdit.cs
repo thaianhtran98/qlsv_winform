@@ -16,7 +16,6 @@ namespace QuanLySV.Controls
 {
 	public partial class UcFormEdit : UserControl
 	{
-		private bool _isLoading = false;
 		private ArrayList StudentList;
 		private Student CurrentStudent;
 		private bool _isEdit = false;
@@ -36,12 +35,6 @@ namespace QuanLySV.Controls
 
 		private void SaveStudent(object sender, EventArgs e)
 		{
-			if (StudentService.GetStudentByStudentId(CurrentStudent.StudentId) != null && !_isEdit)
-			{
-				MessageBox.Show("Sinh viên đã tồn tại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				return;
-			}
-
 			if (TbxStudentId.Text == String.Empty)
 			{
 				MessageBox.Show("Vui lòng nhập mã số sinh viên", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -50,6 +43,11 @@ namespace QuanLySV.Controls
 			if (TbxName.Text == String.Empty)
 			{
 				MessageBox.Show("Vui lòng nhập họ và tên sinh viên", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
+			if (StudentService.GetStudentByStudentId(CurrentStudent.StudentId) != null && !_isEdit)
+			{
+				MessageBox.Show("Sinh viên đã tồn tại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
 

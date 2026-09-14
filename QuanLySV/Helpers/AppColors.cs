@@ -1,10 +1,7 @@
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace QuanLySV.Helpers
 {
-	/// <summary>
-	/// Modern and bright standard color palette.
-	/// </summary>
 	public static class AppColors
     {
 		// 1. Menu & Navigation Header

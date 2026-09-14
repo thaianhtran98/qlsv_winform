@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -114,8 +114,10 @@ namespace QuanLySV.Services
 			return student;
 		}
 
-		public static bool InsertStudent(Student student)
+		public static bool InsertStudent(Student student, out string err)
 		{
+			err = string.Empty;
+			try {
 			string sql = "INSERT INTO STUDENT (STUDENTID, NAME, SEX, BIRTHOFDATE, BIRTHLOCAL, VNEID, DATEOFISSUE, LOCALOFISSUE, LOCAL, PLACEOFRESIDENCE, NUMBERPHONE, STATUS) " +
 				  "VALUES (:STUDENTID, :NAME, :SEX, :BIRTHOFDATE, :BIRTHLOCAL, :VNEID, :DATEOFISSUE, :LOCALOFISSUE, :LOCAL, :PLACEOFRESIDENCE, :NUMBERPHONE, :STATUS)";
 
@@ -137,10 +139,13 @@ namespace QuanLySV.Services
 			
 			int result = OracleHelper.ExecuteNonQuery(sql, parameters);
 			return result > 0;
+			} catch (Exception ex) { err = ex.Message; return false; }
 		}
 
-		public static bool UpdateStudent(string studentId, Student student)
+		public static bool UpdateStudent(string studentId, Student student, out string err)
 		{
+			err = string.Empty;
+			try {
 			string sql = "UPDATE STUDENT SET " +
 				"STUDENTID = :STUDENTID, " +
 				"NAME = :NAME, " +
@@ -175,6 +180,15 @@ namespace QuanLySV.Services
 
 			int result = OracleHelper.ExecuteNonQuery(sql, parameters);
 			return result > 0;
+			} catch (Exception ex) { err = ex.Message; return false; }
+		}
+
+		public static bool ExistsStudent(string studentId)
+		{
+			string sql = "SELECT COUNT(*) FROM STUDENT WHERE STUDENTID = :STUDENTID";
+			OracleParameter[] p = { new OracleParameter(":STUDENTID", studentId) };
+			object res = OracleHelper.ExecuteScalar(sql, p);
+			return res != null && int.Parse(res.ToString()) > 0;
 		}
 
 		public static bool DeleteStudent(string studentId)

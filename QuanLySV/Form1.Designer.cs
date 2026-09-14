@@ -2,15 +2,8 @@
 {
     partial class Form1
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,15 +15,12 @@
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
 			this.PnlHeader = new System.Windows.Forms.Panel();
 			this.BtnCreate = new System.Windows.Forms.Button();
 			this.BtnList = new System.Windows.Forms.Button();
+			this.BtnManageReference = new System.Windows.Forms.Button();
 			this.PnlBody = new System.Windows.Forms.Panel();
 			this.PnlHeader.SuspendLayout();
 			this.SuspendLayout();
@@ -39,6 +29,7 @@
 			// 
 			this.PnlHeader.Controls.Add(this.BtnCreate);
 			this.PnlHeader.Controls.Add(this.BtnList);
+			this.PnlHeader.Controls.Add(this.BtnManageReference);
 			this.PnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
 			this.PnlHeader.Location = new System.Drawing.Point(0, 0);
 			this.PnlHeader.Name = "PnlHeader";
@@ -57,6 +48,16 @@
 			// 
 			// BtnList
 			// 
+			// 
+			// BtnManageReference
+			// 
+			this.BtnManageReference.Location = new System.Drawing.Point(160, 5);
+			this.BtnManageReference.Name = "BtnManageReference";
+			this.BtnManageReference.Size = new System.Drawing.Size(120, 23);
+			this.BtnManageReference.TabIndex = 2;
+			this.BtnManageReference.Text = "Quản lý danh mục";
+			this.BtnManageReference.UseVisualStyleBackColor = true;
+			this.BtnManageReference.Click += new System.EventHandler(this.BtnManageReference_Click);
 			this.BtnList.Location = new System.Drawing.Point(0, 5);
 			this.BtnList.Name = "BtnList";
 			this.BtnList.Size = new System.Drawing.Size(75, 23);
@@ -94,6 +95,7 @@
 		private System.Windows.Forms.Panel PnlHeader;
 		private System.Windows.Forms.Button BtnCreate;
 		private System.Windows.Forms.Button BtnList;
+		private System.Windows.Forms.Button BtnManageReference;
 		private System.Windows.Forms.Panel PnlBody;
 	}
 }

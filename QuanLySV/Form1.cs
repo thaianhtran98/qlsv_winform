@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -23,6 +23,16 @@ namespace QuanLySV
 			ShowUc(UserControlCurrent);
          }
 
+		public void ShowUcList()
+		{
+			ShowUc(new UcList());
+		}
+
+		public void ShowUcFormEdit(string studentId, bool isEdit)
+		{
+			ShowUc(new UcFormEdit(studentId, isEdit));
+		}
+
 		public void ShowUc(UserControl control)
 		{
 			while (PnlBody.Controls.Count > 0)
@@ -46,6 +56,14 @@ namespace QuanLySV
 		private void BtnCreate_Cick(object sender, EventArgs e)
 		{
 			ShowUc(new UcFormEdit(String.Empty, false));
+		}
+
+		private void BtnManageReference_Click(object sender, EventArgs e)
+		{
+			using (QuanLySV.Forms.DlgManageReference dlg = new QuanLySV.Forms.DlgManageReference())
+			{
+				dlg.ShowDialog(this);
+			}
 		}
 	}
 }

@@ -1,142 +1,265 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using QuanLySV.Data;
 using QuanLySV.Models;
-using QuanLySV.Helpers;
-using System.Collections;
 using QuanLySV.Services;
 
 namespace QuanLySV.Controls
 {
 	public partial class UcFormEdit : UserControl
 	{
-		private ArrayList StudentList;
-		private Student CurrentStudent;
+		private string _studentId = null;
 		private bool _isEdit = false;
+		private bool _isSaved = false;
 
-		public UcFormEdit(string StudentId, bool isEdit)
+		public UcFormEdit(string studentId, bool isEdit)
 		{
 			InitializeComponent();
-			ResetForm();
+			_studentId = studentId;
 			_isEdit = isEdit;
-			StudentList = new ArrayList();
-			CurrentStudent = new Student();
-			if (!string.IsNullOrEmpty(StudentId))
+			_isSaved = isEdit;
+
+			// Tab 1: Binding sinh viên vào StudentDataSet.BindingSource
+			SetupStudentBinding(studentId, isEdit);
+
+			// Tab 2: Khởi tạo thông tin sinh viên cho UC học tập
+			if (isEdit && !string.IsNullOrEmpty(studentId))
 			{
-				GetStudentByStudentId(StudentId);
+				ucStudentAcademic1.LoadData(studentId);
 			}
-          }
+
+			TabMain.SelectedIndexChanged += TabMain_SelectedIndexChanged;
+		}
+
+		private void TabMain_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (TabMain.SelectedTab == TabPageAcademic)
+			{
+				string sid = TbxStudentId.Text.Trim();
+				if (string.IsNullOrEmpty(sid))
+				{
+					MessageBox.Show("Vui lòng nhập mã số sinh viên trước khi xem hoặc thêm thông tin học tập.",
+					    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					TabMain.SelectedTab = TabPageStudent;
+					TbxStudentId.Focus();
+					return;
+				}
+
+				ucStudentAcademic1.LoadData(sid);
+			}
+		}
+
+		// =============================================
+		// TAB 1 — Thông tin sinh viên (FDS Binding)
+		// =============================================
+
+		private void SetupStudentBinding(string studentId, bool isEdit)
+		{
+			StudentDataSet ds = StudentDataSet.Instance;
+
+			if (isEdit)
+			{
+				bool found = ds.NavigateTo(studentId);
+				if (!found)
+				{
+					MessageBox.Show("Không tìm thấy sinh viên trong DataSet. Vui lòng refresh.",
+					    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					return;
+				}
+				TbxStudentId.ReadOnly = true;
+			}
+			else
+			{
+				ds.AddNewRow();
+			}
+
+			BindControl(TbxStudentId, "Text", "STUDENTID");
+			BindControl(TbxName, "Text", "NAME");
+			BindControl(TbxBirthLocal, "Text", "BIRTHLOCAL");
+			BindControl(TbxVneId, "Text", "VNEID");
+			BindControl(TbxLocalOfIssue, "Text", "LOCALOFISSUE");
+			BindControl(TbxLocal, "Text", "LOCAL");
+			BindControl(TbxPlaceOfResidence, "Text", "PLACEOFRESIDENCE");
+			BindControl(MskNumberPhone, "Text", "NUMBERPHONE");
+			BindControl(DtpBirthOfDate, "Value", "BIRTHOFDATE");
+			BindControl(DtpDateOfIssue, "Value", "DATEOFISSUE");
+
+			LoadSexRadioButton();
+			RbtMale.CheckedChanged += RbtSex_CheckedChanged;
+			RbtFemale.CheckedChanged += RbtSex_CheckedChanged;
+		}
+
+		private void BindControl(Control control, string property, string column)
+		{
+			control.DataBindings.Clear();
+			Binding b = new Binding(property, StudentDataSet.Instance.BindingSource, column, true, DataSourceUpdateMode.OnPropertyChanged);
+			if (column == "STUDENTID")
+			{
+				b.NullValue = string.Empty;
+				b.Parse += (s, ev) =>
+				{
+					if (ev.Value == null || ev.Value == DBNull.Value)
+						ev.Value = string.Empty;
+				};
+			}
+			control.DataBindings.Add(b);
+		}
+
+		public void ClearStudentBindings()
+		{
+			TbxStudentId.DataBindings.Clear();
+			TbxName.DataBindings.Clear();
+			TbxBirthLocal.DataBindings.Clear();
+			TbxVneId.DataBindings.Clear();
+			TbxLocalOfIssue.DataBindings.Clear();
+			TbxLocal.DataBindings.Clear();
+			TbxPlaceOfResidence.DataBindings.Clear();
+			MskNumberPhone.DataBindings.Clear();
+			DtpBirthOfDate.DataBindings.Clear();
+			DtpDateOfIssue.DataBindings.Clear();
+		}
+
+		public void CancelEdit()
+		{
+			if (!_isSaved)
+			{
+				ClearStudentBindings();
+				StudentDataSet.Instance.CancelPendingRow();
+			}
+		}
+
+		private void LoadSexRadioButton()
+		{
+			DataRow row = StudentDataSet.Instance.CurrentRow;
+			if (row == null) return;
+
+			int sex = row["SEX"] != DBNull.Value ? Convert.ToInt32(row["SEX"]) : Student.MALE;
+			RbtMale.Checked = (sex == Student.MALE);
+			RbtFemale.Checked = (sex == Student.FEMALE);
+		}
+
+		private void RbtSex_CheckedChanged(object sender, EventArgs e)
+		{
+			DataRow row = StudentDataSet.Instance.CurrentRow;
+			if (row == null) return;
+
+			row.BeginEdit();
+			row["SEX"] = RbtMale.Checked ? Student.MALE : Student.FEMALE;
+			row.EndEdit();
+		}
+
+		// ─── Nút Lưu tạm ───────────────────────────────────────────────
+
+		private void BtnSaveTemp_Click(object sender, EventArgs e)
+		{
+			if (!ValidateStudentForm()) return;
+
+			string sid = TbxStudentId.Text.Trim();
+			StudentDataSet ds = StudentDataSet.Instance;
+			DataRow row = ds.CurrentRow;
+			if (row != null)
+			{
+				row.BeginEdit();
+				row["STUDENTID"] = sid;
+				row["NAME"] = TbxName.Text.Trim();
+				row["STATUS"] = Student.ACTIVE;
+				string phone = MskNumberPhone.Text.Replace("-", "").Trim();
+				row["NUMBERPHONE"] = phone.Length > 0 ? (object)MskNumberPhone.Text.Trim() : DBNull.Value;
+				row.EndEdit();
+			}
+
+			ds.BindingSource.EndEdit();
+			_isSaved = true;
+
+			MessageBox.Show("Đã lưu tạm vào DataSet. Nhấn '💾 Lưu tất cả' trên danh sách để lưu xuống DB.",
+			    "Lưu tạm", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+			// Navigate back to list
+			Form1 mainForm = this.FindForm() as Form1;
+			if (mainForm != null) mainForm.ShowUcList();
+		}
+
+		// ─── Nút Lưu DB ────────────────────────────────────────────────
+
+		private bool SaveStudentDirect()
+		{
+			if (!ValidateStudentForm()) return false;
+
+			string sid = TbxStudentId.Text.Trim();
+
+			// Nếu là thêm mới, kiểm tra mã SV đã tồn tại trong DB chưa
+			if (!_isEdit && StudentService.ExistsStudent(sid))
+			{
+				MessageBox.Show("Mã sinh viên '" + sid + "' đã tồn tại trong cơ sở dữ liệu. Vui lòng nhập mã sinh viên khác.",
+					"Trùng mã sinh viên", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				TbxStudentId.Focus();
+				return false;
+			}
+
+			StudentDataSet ds = StudentDataSet.Instance;
+			DataRow row = ds.CurrentRow;
+			if (row == null) return false;
+
+			row["STUDENTID"] = sid;
+			row["NAME"] = TbxName.Text.Trim();
+			row["STATUS"] = Student.ACTIVE;
+
+			// Xử lý số điện thoại: nếu chỉ toàn khoảng trắng hoặc ký tự mask thì coi như rỗng
+			string phone = MskNumberPhone.Text.Replace("-", "").Trim();
+			row["NUMBERPHONE"] = phone.Length > 0 ? (object)MskNumberPhone.Text.Trim() : DBNull.Value;
+
+			// Commit mọi thay đổi từ UI xuống DataRow
+			ds.BindingSource.EndEdit();
+
+			string errorMessage;
+			bool saved = ds.Adapter.SaveStudent(row, !_isEdit, _isEdit ? _studentId : null, out errorMessage);
+
+			if (saved)
+			{
+				_isSaved = true;
+				_isEdit = true;
+				_studentId = sid;
+				TbxStudentId.ReadOnly = true;
+				return true;
+			}
+			else
+			{
+				MessageBox.Show("Lưu sinh viên thất bại!\n" + (errorMessage ?? "Vui lòng kiểm tra lại dữ liệu."), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return false;
+			}
+		}
 
 		private void SaveStudent(object sender, EventArgs e)
 		{
-			if (TbxStudentId.Text == String.Empty)
+			bool wasEdit = _isEdit;
+			if (SaveStudentDirect())
 			{
-				MessageBox.Show("Vui lòng nhập mã số sinh viên", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				return;
-			}
-			if (TbxName.Text == String.Empty)
-			{
-				MessageBox.Show("Vui lòng nhập họ và tên sinh viên", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				return;
-			}
-			if (StudentService.GetStudentByStudentId(CurrentStudent.StudentId) != null && !_isEdit)
-			{
-				MessageBox.Show("Sinh viên đã tồn tại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				return;
-			}
-
-			Student newStudent = new Student
-			{
-				StudentId = TbxStudentId.Text,
-				Name = TbxName.Text,
-				Sex = RbtFemale.Checked ? Student.FEMALE : Student.MALE,
-				BirthOfDate = DateTime.Parse(DtpBirthOfDate.Value.ToString()),
-				BirthLocal = TbxBirthLocal.Text,
-				VneId = TbxVneId.Text,
-				DateOfIssue = DateTime.Parse(DtpDateOfIssue.Value.ToString()),
-				LocalOfIssue = TbxLocalOfIssue.Text,
-				Local = TbxLocal.Text,
-				PlaceOfResidence = TbxPlaceOfResidence.Text,
-				NumberPhone = MskNumberPhone.Text,
-				Status = Student.ACTIVE
-			};
-
-			bool result = false;
-			string messagePrefix = _isEdit ? "Cập nhật " : "Thêm ";
-			if (_isEdit)
-			{
-				result = StudentService.UpdateStudent(CurrentStudent.StudentId, newStudent);
-			}
-			else
-			{
-				result = StudentService.InsertStudent(newStudent);
-			}
-
-			if (result)
-			{
-				MessageBox.Show(messagePrefix + "sinh viên thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-			}
-			else
-			{
-				MessageBox.Show(messagePrefix + "sinh viên thất bại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-			}
-
-			if(!_isEdit && result)
-			{
-				ResetForm();
+				string prefix = wasEdit ? "Cập nhật" : "Thêm";
+				MessageBox.Show(prefix + " sinh viên thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				string sid = TbxStudentId.Text.Trim();
+				ucStudentAcademic1.LoadData(sid);
 			}
 		}
 
-		private Student GetStudentByStudentId(string studentId)
+		// ─── Validation ───────────────────────────────────────────────
+
+		private bool ValidateStudentForm()
 		{
-			CurrentStudent = StudentService.GetStudentByStudentId(studentId);
-			if (_isEdit && CurrentStudent != null)
+			if (string.IsNullOrWhiteSpace(TbxStudentId.Text))
 			{
-				TbxStudentId.Text = CurrentStudent.StudentId;
-				TbxName.Text = CurrentStudent.Name;
-
-				if (CurrentStudent.Sex == Student.MALE)
-				{
-					RbtMale.Checked = true;
-					RbtFemale.Checked = false;
-				}
-				else
-				{
-					RbtMale.Checked = false;
-					RbtFemale.Checked = true;
-				}
-				DtpBirthOfDate.Value = CurrentStudent.BirthOfDate;
-				TbxBirthLocal.Text = CurrentStudent.BirthLocal;
-				TbxVneId.Text = CurrentStudent.VneId;
-				DtpDateOfIssue.Value = CurrentStudent.DateOfIssue;
-				TbxLocalOfIssue.Text = CurrentStudent.LocalOfIssue;
-				TbxLocal.Text = CurrentStudent.Local;
-				TbxPlaceOfResidence.Text = CurrentStudent.PlaceOfResidence;
-				MskNumberPhone.Text = CurrentStudent.NumberPhone;
+				MessageBox.Show("Vui lòng nhập mã số sinh viên.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				TbxStudentId.Focus();
+				return false;
 			}
-
-			return CurrentStudent;
-		}
-
-		private void ResetForm()
-		{
-			TbxStudentId.Text = "";
-			TbxName.Text = "";
-			RbtMale.Checked = true;
-			DtpBirthOfDate.Value = DateTime.Now;
-			TbxBirthLocal.Text = "";
-			TbxVneId.Text = "";
-			DtpDateOfIssue.Value = DateTime.Now;
-			TbxLocalOfIssue.Text = "";
-			TbxLocal.Text = "";
-			TbxPlaceOfResidence.Text = "";
-			MskNumberPhone.Text = "";
+			if (string.IsNullOrWhiteSpace(TbxName.Text))
+			{
+				MessageBox.Show("Vui lòng nhập họ và tên sinh viên.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				TbxName.Focus();
+				return false;
+			}
+			return true;
 		}
 	}
 }
+

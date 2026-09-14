@@ -16,9 +16,7 @@ namespace QuanLySV.Controls
 {
 	public partial class UcList : UserControl
 	{
-		/// <summary>Edit</summary>
 		private const int COL_EDIT = 12;
-		/// <summary>Delete</summary>
 		private const int COL_DELETE = 13;
 		private GridViewHelper _GridViewHelper;
 

@@ -2,15 +2,8 @@
 {
 	partial class UcFormEdit
 	{
-		/// <summary> 
-		/// Required designer variable.
-		/// </summary>
 		private System.ComponentModel.IContainer components = null;
 
-		/// <summary> 
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && (components != null))
@@ -22,12 +15,12 @@
 
 		#region Component Designer generated code
 
-		/// <summary> 
-		/// Required method for Designer support - do not modify 
-		/// the contents of this method with the code editor.
-		/// </summary>
 		private void InitializeComponent()
 		{
+						this.TabMain = new System.Windows.Forms.TabControl();
+			this.TabPageStudent = new System.Windows.Forms.TabPage();
+			this.TabPageAcademic = new System.Windows.Forms.TabPage();
+			this.ucStudentAcademic1 = new QuanLySV.Controls.UcStudentAcademic();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.BtnSave = new System.Windows.Forms.Button();
 			this.MskNumberPhone = new System.Windows.Forms.MaskedTextBox();
@@ -53,6 +46,9 @@
 			this.TbxName = new System.Windows.Forms.TextBox();
 			this.LblBirthOfDate = new System.Windows.Forms.Label();
 			this.LblName = new System.Windows.Forms.Label();
+						this.TabMain.SuspendLayout();
+			this.TabPageStudent.SuspendLayout();
+			this.TabPageAcademic.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -290,9 +286,32 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoScroll = true;
-			this.Controls.Add(this.panel1);
+						// TabMain
+			this.TabMain.Controls.Add(this.TabPageStudent);
+			this.TabMain.Controls.Add(this.TabPageAcademic);
+			this.TabMain.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.TabMain.Name = "TabMain";
+			this.TabMain.SelectedIndex = 0;
+			// TabPageStudent
+			this.TabPageStudent.Controls.Add(this.panel1);
+			this.TabPageStudent.Name = "TabPageStudent";
+			this.TabPageStudent.Text = "Thông tin sinh viên";
+			this.TabPageStudent.UseVisualStyleBackColor = true;
+			// TabPageAcademic
+			this.TabPageAcademic.Controls.Add(this.ucStudentAcademic1);
+			this.TabPageAcademic.Name = "TabPageAcademic";
+			this.TabPageAcademic.Text = "Kết quả học tập";
+			this.TabPageAcademic.UseVisualStyleBackColor = true;
+			// ucStudentAcademic1
+			this.ucStudentAcademic1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ucStudentAcademic1.Name = "ucStudentAcademic1";
+			this.ucStudentAcademic1.TabIndex = 0;
+			this.Controls.Add(this.TabMain);
 			this.Name = "UcFormEdit";
 			this.Size = new System.Drawing.Size(545, 398);
+						this.TabMain.ResumeLayout(false);
+			this.TabPageStudent.ResumeLayout(false);
+			this.TabPageAcademic.ResumeLayout(false);
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
 			this.ResumeLayout(false);
@@ -301,6 +320,10 @@
 
 		#endregion
 
+				private System.Windows.Forms.TabControl TabMain;
+		private System.Windows.Forms.TabPage TabPageStudent;
+		private System.Windows.Forms.TabPage TabPageAcademic;
+		private UcStudentAcademic ucStudentAcademic1;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Button BtnSave;
 		private System.Windows.Forms.MaskedTextBox MskNumberPhone;

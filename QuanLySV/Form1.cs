@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using QuanLySV.Controls;
+using QuanLySV.Data;
 using QuanLySV.Helpers;
 
 namespace QuanLySV
@@ -19,9 +20,15 @@ namespace QuanLySV
 		public Form1()
 		{
 			InitializeComponent();
+			this.Load += Form1_Load;
 			UserControlCurrent = new UcList();
 			ShowUc(UserControlCurrent);
-         }
+		}
+
+		private void Form1_Load(object sender, EventArgs e)
+		{
+			ReferenceDataSet.Instance.FillAll();
+		}
 
 		public void ShowUcList()
 		{

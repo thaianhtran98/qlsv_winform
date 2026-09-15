@@ -11,7 +11,6 @@ namespace QuanLySV.Adapters
 		// =============================================
 		// DB ──► DataTable (Fill)
 		// =============================================
-
 		public void Fill(DataTable table, int status = -1, int sex = -1)
 		{
 			table.Rows.Clear();

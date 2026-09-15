@@ -1,4 +1,4 @@
-﻿using QuanLySV.Data;
+using QuanLySV.Data;
 using QuanLySV.Forms;
 using QuanLySV.Models;
 using QuanLySV.Services;
@@ -14,6 +14,12 @@ namespace QuanLySV.Controls
 {
 	public partial class UcStudentAcademic : UserControl
 	{
+		private const int COL_CLASS_NAME = 0;
+		private const int COL_SYEAR_NAME = 1;
+		private const int COL_SUB_NAME = 2;
+		private const int COL_SEMESTER = 3;
+		private const int COL_SCORE = 4;
+		private const int COL_SCORE_LETER = 5;
 		private string _studentId;
 		private StudentAcademic _currentAcademic;
 		private bool _isAddAcademic = false;
@@ -28,8 +34,16 @@ namespace QuanLySV.Controls
 		public void LoadData(string studentId)
 		{
 			_studentId = studentId;
+
+			// Đảm bảo danh mục đã được nạp (chỉ chạy lúc runtime, không chạy trong constructor)
+			if (ReferenceDataSet.Instance.ClassTable.Rows.Count == 0)
+			{
+				ReferenceDataSet.Instance.FillAll();
+			}
+
 			FillAcademicList(_studentId);
 			ShowAcademicForm(false);
+			ResetAcademicForm();
 		}
 
 		// =============================================
@@ -66,22 +80,52 @@ namespace QuanLySV.Controls
 			DgvAcademic.Rows.Clear();
 			if (string.IsNullOrEmpty(studentId)) return;
 
-			ArrayList academics = AcademicService.FillStudentAcademic(studentId);
-			if (academics == null || academics.Count == 0) return;
+			StudentAcademicDataSet ds = StudentAcademicDataSet.Instance;
+			DataTable studentAcdemicTable = ds.StudentAcademicTable;
+			if (studentAcdemicTable == null || studentAcdemicTable.Rows.Count == 0) return;
 
-			foreach (StudentAcademic ac in academics)
+			foreach (DataRow row in studentAcdemicTable.Rows)
 			{
+				decimal? scoreValue = null;
+				object scoreObj = row["SCORE"];
+				if (scoreObj != DBNull.Value)
+				{
+					string scoreStr = scoreObj?.ToString();
+					if (!string.IsNullOrWhiteSpace(scoreStr) && decimal.TryParse(scoreStr, out decimal tmpScore))
+					{
+						scoreValue = tmpScore;
+					}
+				}
+
+				StudentAcademic studentAcademic = new StudentAcademic
+				{
+					AcademicId = row["ACADEMICID"] != DBNull.Value ? Convert.ToInt64(row["ACADEMICID"]) : 0,
+					StudentId = row["STUDENTID"]?.ToString(),
+					ClassId = row["CLASSID"]?.ToString(),
+					ClassName = row["CLASSNAME"]?.ToString(),
+					SchoolYearId = row["SCHOOLYEARID"]?.ToString(),
+					SchoolYearName = row["SCHOOLYEARNAME"]?.ToString(),
+					SubjectId = row["SUBJECTID"]?.ToString(),
+					SubjectName = row["SUBJECTNAME"]?.ToString(),
+					Semester = row["SEMESTER"] != DBNull.Value ? Convert.ToInt32(row["SEMESTER"]) : 0,
+					Score = scoreValue,
+					ScoreLetter = row["SCORE_LETTER"]?.ToString(),
+					Note = row["NOTE"]?.ToString(),
+					Status = row["STATUS"] != DBNull.Value ? Convert.ToInt32(row["STATUS"]) : 0
+				};
+
 				int rowIdx = DgvAcademic.Rows.Add(
-				    ac.ClassName,
-				    ac.SchoolYearName,
-				    ac.SubjectName,
-				    ac.Semester > 0 ? "HK " + ac.Semester : "",
-				    ac.Score.HasValue ? ac.Score.Value.ToString("0.##") : "",
-				    ac.ScoreLetter ?? ""
+					studentAcademic.ClassName,
+					studentAcademic.SchoolYearName,
+					studentAcademic.SubjectName,
+					studentAcademic.Semester.ToString() != null ? "HK" + studentAcademic.Semester : "",
+					studentAcademic.Score?.ToString("0.##"),
+					studentAcademic.ScoreLetter,
+					studentAcademic.Note
 				);
-				DgvAcademic.Rows[rowIdx].Tag = ac;
+
+				DgvAcademic.Rows[rowIdx].Tag = studentAcademic;
 			}
-			DgvAcademic.ClearSelection();
 		}
 
 		private StudentAcademic GetAcademicListItem(int rowIndex)
@@ -149,6 +193,7 @@ namespace QuanLySV.Controls
 			}
 
 			_isAddAcademic = true;
+			LblFormName.Text = "Thêm thông tin học tập";
 			_currentAcademic = null;
 			ResetAcademicForm();
 			ShowAcademicForm(true);
@@ -156,25 +201,22 @@ namespace QuanLySV.Controls
 
 		private void BtnSaveToDb_Click(object sender, EventArgs e)
 		{
-			decimal? score = null;
-			if (!string.IsNullOrWhiteSpace(TbxScore.Text))
-			{
-				if (!decimal.TryParse(TbxScore.Text.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal parsed))
-				{
-					MessageBox.Show("Điểm số không hợp lệ.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-					return;
-				}
-				score = parsed;
-			}
-
 			foreach (DataGridViewRow row in DgvAcademic.Rows)
 			{
 				StudentAcademic ac = row.Tag as StudentAcademic;
 				if (ac != null)
 				{
+					decimal? score = null;
+					if (ac.Score != null)
+					{
+						if (!decimal.TryParse(ac.Score.ToString().Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal parsed))
+						{
+							MessageBox.Show("Điểm số không hợp lệ.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+							return;
+						}
+						score = parsed;
+					}
 					ac.Score = score;
-					ac.ScoreLetter = TbxScoreLetter.Text.Trim();
-					ac.Note = TbxAcademicNote.Text.Trim();
 
 					bool ok = false;
 					if (ac.AcademicId == null || ac.AcademicId == 0)
@@ -194,6 +236,9 @@ namespace QuanLySV.Controls
 				}
 			}
 
+			StudentAcademicDataSet ds = StudentAcademicDataSet.Instance;
+			ds.FillStudentAcademic(_studentId);
+
 			FillAcademicList(_studentId);
 			ShowAcademicForm(false);
 		}
@@ -202,6 +247,7 @@ namespace QuanLySV.Controls
 		{
 			if (_currentAcademic == null) return;
 			_isAddAcademic = false;
+			LblFormName.Text = "Sửa thông tin học tập";
 			PopulateAcademicForm(_currentAcademic);
 			ShowAcademicForm(true);
 		}
@@ -227,35 +273,6 @@ namespace QuanLySV.Controls
 				return;
 			}
 
-			// Đảm bảo sinh viên đã tồn tại trong CSDL trước khi thêm học tập (tránh lỗi FK_ACADEMIC_STUDENT)
-			if (!StudentService.ExistsStudent(_studentId))
-			{
-				try
-				{
-					StudentDataSet.Instance.BindingSource.EndEdit();
-				}
-				catch { }
-
-				DataRow srow = StudentDataSet.Instance.StudentTable.Rows.Find(_studentId);
-				if (srow != null)
-				{
-					string saveErr;
-					bool saved = StudentDataSet.Instance.Adapter.SaveStudent(srow, true, null, out saveErr);
-					if (!saved || !StudentService.ExistsStudent(_studentId))
-					{
-						MessageBox.Show("Không thể lưu thông tin học tập: Sinh viên chưa được lưu thành công xuống cơ sở dữ liệu.\n" + (saveErr ?? "Vui lòng lưu hồ sơ sinh viên trước."),
-						    "Lỗi ràng buộc dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-						return;
-					}
-				}
-				else
-				{
-					MessageBox.Show("Mã sinh viên (" + _studentId + ") không tồn tại trong cơ sở dữ liệu. Vui lòng lưu hồ sơ sinh viên trước.",
-					    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-					return;
-				}
-			}
-
 			if (CbxClass.SelectedValue == null || CbxSchoolYear.SelectedValue == null || CbxSubject.SelectedValue == null)
 			{
 				MessageBox.Show("Vui lòng chọn đầy đủ lớp học, năm học và môn học.",
@@ -263,49 +280,96 @@ namespace QuanLySV.Controls
 				return;
 			}
 
-			decimal? score = null;
-			if (!string.IsNullOrWhiteSpace(TbxScore.Text))
+			if (_isAddAcademic)
 			{
-				if (!decimal.TryParse(TbxScore.Text.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal parsed))
+				decimal? score = null;
+				if (!string.IsNullOrWhiteSpace(TbxScore.Text))
 				{
-					MessageBox.Show("Điểm số không hợp lệ.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-					return;
+					if (!decimal.TryParse(TbxScore.Text.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal parsed))
+					{
+						MessageBox.Show("Điểm số không hợp lệ.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						return;
+					}
+					score = parsed;
 				}
-				score = parsed;
+				StudentAcademic ac = new StudentAcademic
+				{
+					StudentId = _studentId,
+					ClassId = CbxClass.SelectedValue?.ToString(),
+					ClassName = CbxClass.Text,
+					SchoolYearId = CbxSchoolYear.SelectedValue?.ToString(),
+					SchoolYearName = CbxSchoolYear.Text,
+					SubjectId = CbxSubject.SelectedValue?.ToString(),
+					SubjectName = CbxSubject.Text,
+					Semester = CbxSemester.SelectedIndex >= 0 ? CbxSemester.SelectedIndex + 1 : 0,
+					Score = score,
+					ScoreLetter = TbxScoreLetter.Text.Trim(),
+					Note = TbxAcademicNote.Text.Trim(),
+					Status = StudentAcademic.ACTIVE
+				};
+				_academicList.Add(ac);
+				int rowIdx = DgvAcademic.Rows.Add(
+				    ac.ClassName,
+				    ac.SchoolYearName,
+				    ac.SubjectName,
+				    ac.Semester > 0 ? "HK " + ac.Semester : "",
+				    ac.Score.HasValue ? ac.Score.Value.ToString("0.##") : "",
+				    ac.ScoreLetter ?? ""
+				);
+				DgvAcademic.Rows[rowIdx].Tag = ac;
+
+				DgvAcademic.Rows[rowIdx].DefaultCellStyle.BackColor = Color.LightYellow;
 			}
-			StudentAcademic ac = new StudentAcademic
+			else
 			{
-				StudentId = _studentId,
-				ClassId = CbxClass.SelectedValue.ToString(),
-				ClassName = CbxClass.Text,                      
-				SchoolYearId = CbxSchoolYear.SelectedValue.ToString(),
-				SchoolYearName = CbxSchoolYear.Text,
-				SubjectId = CbxSubject.SelectedValue.ToString(),
-				SubjectName = CbxSubject.Text,
-				Semester = CbxSemester.SelectedIndex >= 0 ? CbxSemester.SelectedIndex + 1 : 0,
-				Score = score,
-				ScoreLetter = TbxScoreLetter.Text.Trim(),
-				Note = TbxAcademicNote.Text.Trim(),
-				Status = StudentAcademic.ACTIVE
-			};
-			_academicList.Add(ac);
-			int rowIdx = DgvAcademic.Rows.Add(
-			    ac.ClassName,
-			    ac.SchoolYearName,
-			    ac.SubjectName,
-			    ac.Semester > 0 ? "HK " + ac.Semester : "",
-			    ac.Score.HasValue ? ac.Score.Value.ToString("0.##") : "",
-			    ac.ScoreLetter ?? ""
-			);
-			DgvAcademic.Rows[rowIdx].Tag = ac;
+				if (DgvAcademic.CurrentRow != null)
+				{
+					DataGridViewRow currentRow = DgvAcademic.CurrentRow;
+					StudentAcademic sa = currentRow.Tag as StudentAcademic;
+					if (sa != null)
+					{
+						decimal? score = null;
+						if (!string.IsNullOrWhiteSpace(TbxScore.Text))
+						{
+							if (!decimal.TryParse(TbxScore.Text.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal parsed))
+							{
+								MessageBox.Show("Điểm số không hợp lệ.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+								return;
+							}
+							score = parsed;
+						}
 
-			DgvAcademic.Rows[rowIdx].DefaultCellStyle.BackColor = Color.LightYellow;
+						sa.ClassId = CbxClass.SelectedValue.ToString();
+						sa.ClassName = CbxClass.Text;
+						sa.SchoolYearId = CbxSchoolYear.SelectedValue.ToString();
+						sa.SchoolYearName = CbxSchoolYear.Text;
+						sa.SubjectId = CbxSubject.SelectedValue.ToString();
+						sa.SubjectName = CbxSubject.Text;
+						sa.Semester = CbxSemester.SelectedIndex >= 0 ? CbxSemester.SelectedIndex + 1 : 0;
+						sa.Score = score;
+						sa.ScoreLetter = TbxScoreLetter.Text.Trim();
+						sa.Note = TbxAcademicNote.Text.Trim();
+						currentRow.Tag = sa;
 
+						currentRow.Cells[COL_CLASS_NAME].Value = sa.ClassName;
+						currentRow.Cells[COL_SYEAR_NAME].Value = sa.SchoolYearName;
+						currentRow.Cells[COL_SUB_NAME].Value = sa.SubjectName;
+						currentRow.Cells[COL_SEMESTER].Value = sa.Semester > 0 ? "HK " + sa.Semester : "";
+						currentRow.Cells[COL_SCORE].Value = sa.Score.HasValue ? sa.Score.Value.ToString("0.##") : "";
+						currentRow.Cells[COL_SCORE_LETER].Value = sa.ScoreLetter ?? "";
+
+						currentRow.DefaultCellStyle.BackColor = Color.LightYellow;
+						ShowAcademicForm(false);
+						ResetAcademicForm();
+					}
+				}
+			}
 		}
 
 		private void BtnCancelAcademic_Click(object sender, EventArgs e)
 		{
 			ShowAcademicForm(false);
+			ResetAcademicForm();
 			DgvAcademic.ClearSelection();
 		}
 

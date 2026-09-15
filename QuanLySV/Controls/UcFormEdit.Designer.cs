@@ -17,12 +17,10 @@
 
 		private void InitializeComponent()
 		{
-						this.TabMain = new System.Windows.Forms.TabControl();
+			this.TabMain = new System.Windows.Forms.TabControl();
 			this.TabPageStudent = new System.Windows.Forms.TabPage();
-			this.TabPageAcademic = new System.Windows.Forms.TabPage();
-			this.ucStudentAcademic1 = new QuanLySV.Controls.UcStudentAcademic();
 			this.panel1 = new System.Windows.Forms.Panel();
-			this.BtnSave = new System.Windows.Forms.Button();
+			this.BtnSaveTemp = new System.Windows.Forms.Button();
 			this.MskNumberPhone = new System.Windows.Forms.MaskedTextBox();
 			this.LblNumberPhone = new System.Windows.Forms.Label();
 			this.TbxPlaceOfResidence = new System.Windows.Forms.TextBox();
@@ -46,16 +44,41 @@
 			this.TbxName = new System.Windows.Forms.TextBox();
 			this.LblBirthOfDate = new System.Windows.Forms.Label();
 			this.LblName = new System.Windows.Forms.Label();
-						this.TabMain.SuspendLayout();
+			this.TabPageAcademic = new System.Windows.Forms.TabPage();
+			this.ucStudentAcademic = new QuanLySV.Controls.UcStudentAcademic();
+			this.BtnSaveAll = new System.Windows.Forms.Button();
+			this.TabMain.SuspendLayout();
 			this.TabPageStudent.SuspendLayout();
-			this.TabPageAcademic.SuspendLayout();
 			this.panel1.SuspendLayout();
+			this.TabPageAcademic.SuspendLayout();
 			this.SuspendLayout();
+			// 
+			// TabMain
+			// 
+			this.TabMain.Controls.Add(this.TabPageStudent);
+			this.TabMain.Controls.Add(this.TabPageAcademic);
+			this.TabMain.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.TabMain.Location = new System.Drawing.Point(0, 0);
+			this.TabMain.Name = "TabMain";
+			this.TabMain.SelectedIndex = 0;
+			this.TabMain.Size = new System.Drawing.Size(655, 477);
+			this.TabMain.TabIndex = 0;
+			// 
+			// TabPageStudent
+			// 
+			this.TabPageStudent.Controls.Add(this.panel1);
+			this.TabPageStudent.Location = new System.Drawing.Point(4, 22);
+			this.TabPageStudent.Name = "TabPageStudent";
+			this.TabPageStudent.Size = new System.Drawing.Size(647, 451);
+			this.TabPageStudent.TabIndex = 0;
+			this.TabPageStudent.Text = "Thông tin sinh viên";
+			this.TabPageStudent.UseVisualStyleBackColor = true;
 			// 
 			// panel1
 			// 
 			this.panel1.AutoScroll = true;
-			this.panel1.Controls.Add(this.BtnSave);
+			this.panel1.Controls.Add(this.BtnSaveAll);
+			this.panel1.Controls.Add(this.BtnSaveTemp);
 			this.panel1.Controls.Add(this.MskNumberPhone);
 			this.panel1.Controls.Add(this.LblNumberPhone);
 			this.panel1.Controls.Add(this.TbxPlaceOfResidence);
@@ -79,21 +102,20 @@
 			this.panel1.Controls.Add(this.TbxName);
 			this.panel1.Controls.Add(this.LblBirthOfDate);
 			this.panel1.Controls.Add(this.LblName);
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel1.Location = new System.Drawing.Point(0, 0);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(545, 398);
+			this.panel1.Size = new System.Drawing.Size(663, 503);
 			this.panel1.TabIndex = 0;
 			// 
-			// BtnSave
+			// BtnSaveTemp
 			// 
-			this.BtnSave.Location = new System.Drawing.Point(464, 370);
-			this.BtnSave.Name = "BtnSave";
-			this.BtnSave.Size = new System.Drawing.Size(75, 23);
-			this.BtnSave.TabIndex = 47;
-			this.BtnSave.Text = "Lưu";
-			this.BtnSave.UseVisualStyleBackColor = true;
-			this.BtnSave.Click += new System.EventHandler(this.SaveStudent);
+			this.BtnSaveTemp.Location = new System.Drawing.Point(488, 425);
+			this.BtnSaveTemp.Name = "BtnSaveTemp";
+			this.BtnSaveTemp.Size = new System.Drawing.Size(75, 23);
+			this.BtnSaveTemp.TabIndex = 47;
+			this.BtnSaveTemp.Text = "Lưu tạm";
+			this.BtnSaveTemp.UseVisualStyleBackColor = true;
+			this.BtnSaveTemp.Click += new System.EventHandler(this.BtnSaveTemp_Click);
 			// 
 			// MskNumberPhone
 			// 
@@ -115,7 +137,7 @@
 			// 
 			this.TbxPlaceOfResidence.Location = new System.Drawing.Point(4, 300);
 			this.TbxPlaceOfResidence.Name = "TbxPlaceOfResidence";
-			this.TbxPlaceOfResidence.Size = new System.Drawing.Size(537, 20);
+			this.TbxPlaceOfResidence.Size = new System.Drawing.Size(640, 20);
 			this.TbxPlaceOfResidence.TabIndex = 44;
 			// 
 			// LblPlaceOfResidence
@@ -130,7 +152,7 @@
 			// 
 			this.TbxLocalOfIssue.Location = new System.Drawing.Point(4, 220);
 			this.TbxLocalOfIssue.Name = "TbxLocalOfIssue";
-			this.TbxLocalOfIssue.Size = new System.Drawing.Size(537, 20);
+			this.TbxLocalOfIssue.Size = new System.Drawing.Size(640, 20);
 			this.TbxLocalOfIssue.TabIndex = 40;
 			// 
 			// LblLocalOfIssue
@@ -162,7 +184,7 @@
 			// 
 			this.TbxStudentId.Location = new System.Drawing.Point(4, 20);
 			this.TbxStudentId.Name = "TbxStudentId";
-			this.TbxStudentId.Size = new System.Drawing.Size(537, 20);
+			this.TbxStudentId.Size = new System.Drawing.Size(640, 20);
 			this.TbxStudentId.TabIndex = 25;
 			// 
 			// LblStudentId
@@ -192,7 +214,7 @@
 			// 
 			this.TbxLocal.Location = new System.Drawing.Point(4, 260);
 			this.TbxLocal.Name = "TbxLocal";
-			this.TbxLocal.Size = new System.Drawing.Size(537, 20);
+			this.TbxLocal.Size = new System.Drawing.Size(640, 20);
 			this.TbxLocal.TabIndex = 42;
 			// 
 			// LblLocal
@@ -207,7 +229,7 @@
 			// 
 			this.TbxBirthLocal.Location = new System.Drawing.Point(4, 140);
 			this.TbxBirthLocal.Name = "TbxBirthLocal";
-			this.TbxBirthLocal.Size = new System.Drawing.Size(537, 20);
+			this.TbxBirthLocal.Size = new System.Drawing.Size(640, 20);
 			this.TbxBirthLocal.TabIndex = 34;
 			// 
 			// LblBirthLocal
@@ -262,7 +284,7 @@
 			// 
 			this.TbxName.Location = new System.Drawing.Point(4, 60);
 			this.TbxName.Name = "TbxName";
-			this.TbxName.Size = new System.Drawing.Size(537, 20);
+			this.TbxName.Size = new System.Drawing.Size(640, 20);
 			this.TbxName.TabIndex = 27;
 			// 
 			// LblBirthOfDate
@@ -281,39 +303,47 @@
 			this.LblName.TabIndex = 26;
 			this.LblName.Text = "Họ và tên:";
 			// 
+			// TabPageAcademic
+			// 
+			this.TabPageAcademic.Controls.Add(this.ucStudentAcademic);
+			this.TabPageAcademic.Location = new System.Drawing.Point(4, 22);
+			this.TabPageAcademic.Name = "TabPageAcademic";
+			this.TabPageAcademic.Size = new System.Drawing.Size(647, 451);
+			this.TabPageAcademic.TabIndex = 1;
+			this.TabPageAcademic.Text = "Kết quả học tập";
+			this.TabPageAcademic.UseVisualStyleBackColor = true;
+			// 
+			// ucStudentAcademic
+			// 
+			this.ucStudentAcademic.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ucStudentAcademic.Location = new System.Drawing.Point(0, 0);
+			this.ucStudentAcademic.Name = "ucStudentAcademic";
+			this.ucStudentAcademic.Size = new System.Drawing.Size(647, 451);
+			this.ucStudentAcademic.TabIndex = 0;
+			// 
+			// BtnSaveAll
+			// 
+			this.BtnSaveAll.Location = new System.Drawing.Point(569, 425);
+			this.BtnSaveAll.Name = "BtnSaveAll";
+			this.BtnSaveAll.Size = new System.Drawing.Size(75, 23);
+			this.BtnSaveAll.TabIndex = 48;
+			this.BtnSaveAll.Text = "Lưu";
+			this.BtnSaveAll.UseVisualStyleBackColor = true;
+			this.BtnSaveAll.Click += new System.EventHandler(this.SaveStudent);
+			// 
 			// UcFormEdit
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoScroll = true;
-						// TabMain
-			this.TabMain.Controls.Add(this.TabPageStudent);
-			this.TabMain.Controls.Add(this.TabPageAcademic);
-			this.TabMain.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.TabMain.Name = "TabMain";
-			this.TabMain.SelectedIndex = 0;
-			// TabPageStudent
-			this.TabPageStudent.Controls.Add(this.panel1);
-			this.TabPageStudent.Name = "TabPageStudent";
-			this.TabPageStudent.Text = "Thông tin sinh viên";
-			this.TabPageStudent.UseVisualStyleBackColor = true;
-			// TabPageAcademic
-			this.TabPageAcademic.Controls.Add(this.ucStudentAcademic1);
-			this.TabPageAcademic.Name = "TabPageAcademic";
-			this.TabPageAcademic.Text = "Kết quả học tập";
-			this.TabPageAcademic.UseVisualStyleBackColor = true;
-			// ucStudentAcademic1
-			this.ucStudentAcademic1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ucStudentAcademic1.Name = "ucStudentAcademic1";
-			this.ucStudentAcademic1.TabIndex = 0;
 			this.Controls.Add(this.TabMain);
 			this.Name = "UcFormEdit";
-			this.Size = new System.Drawing.Size(545, 398);
-						this.TabMain.ResumeLayout(false);
+			this.Size = new System.Drawing.Size(655, 477);
+			this.TabMain.ResumeLayout(false);
 			this.TabPageStudent.ResumeLayout(false);
-			this.TabPageAcademic.ResumeLayout(false);
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
+			this.TabPageAcademic.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -323,9 +353,9 @@
 				private System.Windows.Forms.TabControl TabMain;
 		private System.Windows.Forms.TabPage TabPageStudent;
 		private System.Windows.Forms.TabPage TabPageAcademic;
-		private UcStudentAcademic ucStudentAcademic1;
+		private UcStudentAcademic ucStudentAcademic;
 		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Button BtnSave;
+		private System.Windows.Forms.Button BtnSaveTemp;
 		private System.Windows.Forms.MaskedTextBox MskNumberPhone;
 		private System.Windows.Forms.Label LblNumberPhone;
 		private System.Windows.Forms.TextBox TbxPlaceOfResidence;
@@ -349,5 +379,6 @@
 		private System.Windows.Forms.TextBox TbxName;
 		private System.Windows.Forms.Label LblBirthOfDate;
 		private System.Windows.Forms.Label LblName;
+		private System.Windows.Forms.Button BtnSaveAll;
 	}
 }

@@ -21,7 +21,15 @@
 			this.BtnAddAcademic = new System.Windows.Forms.Button();
 			this.BtnEditAcademic = new System.Windows.Forms.Button();
 			this.BtnDeleteAcademic = new System.Windows.Forms.Button();
+			this.BtnSaveToDb = new System.Windows.Forms.Button();
+			this.LblPendingAcademic = new System.Windows.Forms.Label();
 			this.DgvAcademic = new System.Windows.Forms.DataGridView();
+			this.GdvClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.GdvSchoolYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.GdvSubject = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.GdvSemester = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.GdvScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.GdvScoreLetter = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.PnlAcademicForm = new System.Windows.Forms.Panel();
 			this.LblClass = new System.Windows.Forms.Label();
 			this.CbxClass = new System.Windows.Forms.ComboBox();
@@ -42,15 +50,14 @@
 			this.TbxAcademicNote = new System.Windows.Forms.TextBox();
 			this.BtnSaveAcademic = new System.Windows.Forms.Button();
 			this.BtnCancelAcademic = new System.Windows.Forms.Button();
-			this.BtnSaveToDb = new System.Windows.Forms.Button();
-			this.LblPendingAcademic = new System.Windows.Forms.Label();
-
+			this.LblFormName = new System.Windows.Forms.Label();
 			this.PnlAcademicToolbar.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.DgvAcademic)).BeginInit();
 			this.PnlAcademicForm.SuspendLayout();
 			this.SuspendLayout();
-
+			// 
 			// PnlAcademicToolbar
+			// 
 			this.PnlAcademicToolbar.Controls.Add(this.BtnAddAcademic);
 			this.PnlAcademicToolbar.Controls.Add(this.BtnEditAcademic);
 			this.PnlAcademicToolbar.Controls.Add(this.BtnDeleteAcademic);
@@ -61,8 +68,9 @@
 			this.PnlAcademicToolbar.Name = "PnlAcademicToolbar";
 			this.PnlAcademicToolbar.Size = new System.Drawing.Size(726, 35);
 			this.PnlAcademicToolbar.TabIndex = 0;
-
+			// 
 			// BtnAddAcademic
+			// 
 			this.BtnAddAcademic.Location = new System.Drawing.Point(4, 6);
 			this.BtnAddAcademic.Name = "BtnAddAcademic";
 			this.BtnAddAcademic.Size = new System.Drawing.Size(75, 23);
@@ -70,8 +78,9 @@
 			this.BtnAddAcademic.Text = "➕ Thêm";
 			this.BtnAddAcademic.UseVisualStyleBackColor = true;
 			this.BtnAddAcademic.Click += new System.EventHandler(this.BtnAddAcademic_Click);
-
+			// 
 			// BtnEditAcademic
+			// 
 			this.BtnEditAcademic.Enabled = false;
 			this.BtnEditAcademic.Location = new System.Drawing.Point(88, 6);
 			this.BtnEditAcademic.Name = "BtnEditAcademic";
@@ -80,8 +89,9 @@
 			this.BtnEditAcademic.Text = "✏ Sửa";
 			this.BtnEditAcademic.UseVisualStyleBackColor = true;
 			this.BtnEditAcademic.Click += new System.EventHandler(this.BtnEditAcademic_Click);
-
+			// 
 			// BtnDeleteAcademic
+			// 
 			this.BtnDeleteAcademic.Enabled = false;
 			this.BtnDeleteAcademic.Location = new System.Drawing.Point(171, 6);
 			this.BtnDeleteAcademic.Name = "BtnDeleteAcademic";
@@ -90,8 +100,9 @@
 			this.BtnDeleteAcademic.Text = "✖ Xóa";
 			this.BtnDeleteAcademic.UseVisualStyleBackColor = true;
 			this.BtnDeleteAcademic.Click += new System.EventHandler(this.BtnDeleteAcademic_Click);
-
+			// 
 			// BtnSaveToDb
+			// 
 			this.BtnSaveToDb.Location = new System.Drawing.Point(260, 6);
 			this.BtnSaveToDb.Name = "BtnSaveToDb";
 			this.BtnSaveToDb.Size = new System.Drawing.Size(115, 23);
@@ -99,8 +110,9 @@
 			this.BtnSaveToDb.Text = "💾 Lưu vào DB";
 			this.BtnSaveToDb.UseVisualStyleBackColor = true;
 			this.BtnSaveToDb.Click += new System.EventHandler(this.BtnSaveToDb_Click);
-
+			// 
 			// LblPendingAcademic
+			// 
 			this.LblPendingAcademic.AutoSize = true;
 			this.LblPendingAcademic.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.LblPendingAcademic.ForeColor = System.Drawing.Color.DarkOrange;
@@ -108,70 +120,77 @@
 			this.LblPendingAcademic.Name = "LblPendingAcademic";
 			this.LblPendingAcademic.Size = new System.Drawing.Size(0, 13);
 			this.LblPendingAcademic.TabIndex = 4;
-
+			// 
 			// DgvAcademic
+			// 
 			this.DgvAcademic.AllowUserToAddRows = false;
 			this.DgvAcademic.AllowUserToDeleteRows = false;
 			this.DgvAcademic.AllowUserToResizeRows = false;
 			this.DgvAcademic.BackgroundColor = System.Drawing.Color.White;
 			this.DgvAcademic.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.DgvAcademic.ReadOnly = true;
-			this.DgvAcademic.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.DgvAcademic.MultiSelect = false;
+			this.DgvAcademic.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.GdvClass,
+            this.GdvSchoolYear,
+            this.GdvSubject,
+            this.GdvSemester,
+            this.GdvScore,
+            this.GdvScoreLetter});
 			this.DgvAcademic.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.DgvAcademic.Location = new System.Drawing.Point(0, 35);
+			this.DgvAcademic.MultiSelect = false;
 			this.DgvAcademic.Name = "DgvAcademic";
-			this.DgvAcademic.Size = new System.Drawing.Size(726, 427);
+			this.DgvAcademic.ReadOnly = true;
+			this.DgvAcademic.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+			this.DgvAcademic.Size = new System.Drawing.Size(726, 192);
 			this.DgvAcademic.TabIndex = 1;
 			this.DgvAcademic.SelectionChanged += new System.EventHandler(this.DgvAcademic_SelectionChanged);
-
-			this.colClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.colClass.Name = "GdvClass";
-			this.colClass.HeaderText = "Lớp học";
-			this.colClass.Width = 120;
-			this.colClass.ReadOnly = true;
-
-			this.colSchoolYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.colSchoolYear.Name = "GdvSchoolYear";
-			this.colSchoolYear.HeaderText = "Năm học";
-			this.colSchoolYear.Width = 120;
-			this.colSchoolYear.ReadOnly = true;
-
-			this.colSubject = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.colSubject.Name = "GdvSubject";
-			this.colSubject.HeaderText = "Môn học";
-			this.colSubject.FillWeight = 100;
-			this.colSubject.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.colSubject.ReadOnly = true;
-
-			this.colSemester = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.colSemester.Name = "GdvSemester";
-			this.colSemester.HeaderText = "Học kỳ";
-			this.colSemester.Width = 70;
-			this.colSemester.ReadOnly = true;
-
-			this.colScore = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.colScore.Name = "GdvScore";
-			this.colScore.HeaderText = "Điểm";
-			this.colScore.Width = 70;
-			this.colScore.ReadOnly = true;
-
-			this.colScoreLetter = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.colScoreLetter.Name = "GdvScoreLetter";
-			this.colScoreLetter.HeaderText = "Xếp loại";
-			this.colScoreLetter.Width = 70;
-			this.colScoreLetter.ReadOnly = true;
-
-			this.DgvAcademic.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-			this.colClass,
-			this.colSchoolYear,
-			this.colSubject,
-			this.colSemester,
-			this.colScore,
-			this.colScoreLetter});
-
+			// 
+			// GdvClass
+			// 
+			this.GdvClass.HeaderText = "Lớp học";
+			this.GdvClass.Name = "GdvClass";
+			this.GdvClass.ReadOnly = true;
+			this.GdvClass.Width = 120;
+			// 
+			// GdvSchoolYear
+			// 
+			this.GdvSchoolYear.HeaderText = "Năm học";
+			this.GdvSchoolYear.Name = "GdvSchoolYear";
+			this.GdvSchoolYear.ReadOnly = true;
+			this.GdvSchoolYear.Width = 120;
+			// 
+			// GdvSubject
+			// 
+			this.GdvSubject.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.GdvSubject.HeaderText = "Môn học";
+			this.GdvSubject.Name = "GdvSubject";
+			this.GdvSubject.ReadOnly = true;
+			// 
+			// GdvSemester
+			// 
+			this.GdvSemester.HeaderText = "Học kỳ";
+			this.GdvSemester.Name = "GdvSemester";
+			this.GdvSemester.ReadOnly = true;
+			this.GdvSemester.Width = 70;
+			// 
+			// GdvScore
+			// 
+			this.GdvScore.HeaderText = "Điểm";
+			this.GdvScore.Name = "GdvScore";
+			this.GdvScore.ReadOnly = true;
+			this.GdvScore.Width = 70;
+			// 
+			// GdvScoreLetter
+			// 
+			this.GdvScoreLetter.HeaderText = "Xếp loại";
+			this.GdvScoreLetter.Name = "GdvScoreLetter";
+			this.GdvScoreLetter.ReadOnly = true;
+			this.GdvScoreLetter.Width = 70;
+			// 
 			// PnlAcademicForm
+			// 
 			this.PnlAcademicForm.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.PnlAcademicForm.Controls.Add(this.LblFormName);
 			this.PnlAcademicForm.Controls.Add(this.LblClass);
 			this.PnlAcademicForm.Controls.Add(this.CbxClass);
 			this.PnlAcademicForm.Controls.Add(this.BtnAddClass);
@@ -192,103 +211,182 @@
 			this.PnlAcademicForm.Controls.Add(this.BtnSaveAcademic);
 			this.PnlAcademicForm.Controls.Add(this.BtnCancelAcademic);
 			this.PnlAcademicForm.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.PnlAcademicForm.Location = new System.Drawing.Point(0, 242);
+			this.PnlAcademicForm.Location = new System.Drawing.Point(0, 227);
 			this.PnlAcademicForm.Name = "PnlAcademicForm";
-			this.PnlAcademicForm.Size = new System.Drawing.Size(726, 220);
+			this.PnlAcademicForm.Size = new System.Drawing.Size(726, 235);
 			this.PnlAcademicForm.TabIndex = 2;
 			this.PnlAcademicForm.Visible = false;
-
-			// Row 1
-			this.LblClass.Location = new System.Drawing.Point(4, 8);
+			// 
+			// LblClass
+			// 
+			this.LblClass.Location = new System.Drawing.Point(3, 37);
 			this.LblClass.Name = "LblClass";
 			this.LblClass.Size = new System.Drawing.Size(100, 15);
+			this.LblClass.TabIndex = 0;
 			this.LblClass.Text = "Lớp học:";
+			// 
+			// CbxClass
+			// 
 			this.CbxClass.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.CbxClass.Location = new System.Drawing.Point(4, 26);
+			this.CbxClass.Location = new System.Drawing.Point(3, 55);
 			this.CbxClass.Name = "CbxClass";
-			this.CbxClass.Size = new System.Drawing.Size(320, 22);
-			this.BtnAddClass.Location = new System.Drawing.Point(329, 26);
+			this.CbxClass.Size = new System.Drawing.Size(320, 21);
+			this.CbxClass.TabIndex = 1;
+			// 
+			// BtnAddClass
+			// 
+			this.BtnAddClass.Location = new System.Drawing.Point(328, 55);
+			this.BtnAddClass.Name = "BtnAddClass";
 			this.BtnAddClass.Size = new System.Drawing.Size(25, 23);
+			this.BtnAddClass.TabIndex = 2;
 			this.BtnAddClass.Text = "+";
 			this.BtnAddClass.Click += new System.EventHandler(this.BtnAddClass_Click);
-
-			this.LblSchoolYear.Location = new System.Drawing.Point(370, 8);
+			// 
+			// LblSchoolYear
+			// 
+			this.LblSchoolYear.Location = new System.Drawing.Point(369, 37);
 			this.LblSchoolYear.Name = "LblSchoolYear";
 			this.LblSchoolYear.Size = new System.Drawing.Size(100, 15);
+			this.LblSchoolYear.TabIndex = 3;
 			this.LblSchoolYear.Text = "Năm học:";
+			// 
+			// CbxSchoolYear
+			// 
 			this.CbxSchoolYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.CbxSchoolYear.Location = new System.Drawing.Point(370, 26);
+			this.CbxSchoolYear.Location = new System.Drawing.Point(369, 55);
 			this.CbxSchoolYear.Name = "CbxSchoolYear";
-			this.CbxSchoolYear.Size = new System.Drawing.Size(315, 22);
-			this.BtnAddSchoolYear.Location = new System.Drawing.Point(690, 26);
+			this.CbxSchoolYear.Size = new System.Drawing.Size(315, 21);
+			this.CbxSchoolYear.TabIndex = 4;
+			// 
+			// BtnAddSchoolYear
+			// 
+			this.BtnAddSchoolYear.Location = new System.Drawing.Point(689, 55);
+			this.BtnAddSchoolYear.Name = "BtnAddSchoolYear";
 			this.BtnAddSchoolYear.Size = new System.Drawing.Size(25, 23);
+			this.BtnAddSchoolYear.TabIndex = 5;
 			this.BtnAddSchoolYear.Text = "+";
 			this.BtnAddSchoolYear.Click += new System.EventHandler(this.BtnAddSchoolYear_Click);
-
-			// Row 2
-			this.LblSubject.Location = new System.Drawing.Point(4, 48);
+			// 
+			// LblSubject
+			// 
+			this.LblSubject.Location = new System.Drawing.Point(3, 77);
 			this.LblSubject.Name = "LblSubject";
 			this.LblSubject.Size = new System.Drawing.Size(100, 15);
+			this.LblSubject.TabIndex = 6;
 			this.LblSubject.Text = "Môn học:";
+			// 
+			// CbxSubject
+			// 
 			this.CbxSubject.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.CbxSubject.Location = new System.Drawing.Point(4, 66);
+			this.CbxSubject.Location = new System.Drawing.Point(3, 95);
 			this.CbxSubject.Name = "CbxSubject";
-			this.CbxSubject.Size = new System.Drawing.Size(320, 22);
-			this.BtnAddSubject.Location = new System.Drawing.Point(329, 66);
+			this.CbxSubject.Size = new System.Drawing.Size(320, 21);
+			this.CbxSubject.TabIndex = 7;
+			// 
+			// BtnAddSubject
+			// 
+			this.BtnAddSubject.Location = new System.Drawing.Point(328, 95);
+			this.BtnAddSubject.Name = "BtnAddSubject";
 			this.BtnAddSubject.Size = new System.Drawing.Size(25, 23);
+			this.BtnAddSubject.TabIndex = 8;
 			this.BtnAddSubject.Text = "+";
 			this.BtnAddSubject.Click += new System.EventHandler(this.BtnAddSubject_Click);
-
-			this.LblSemester.Location = new System.Drawing.Point(370, 48);
+			// 
+			// LblSemester
+			// 
+			this.LblSemester.Location = new System.Drawing.Point(369, 77);
 			this.LblSemester.Name = "LblSemester";
 			this.LblSemester.Size = new System.Drawing.Size(100, 15);
+			this.LblSemester.TabIndex = 9;
 			this.LblSemester.Text = "Học kỳ:";
+			// 
+			// CbxSemester
+			// 
 			this.CbxSemester.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.CbxSemester.Location = new System.Drawing.Point(370, 66);
+			this.CbxSemester.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3"});
+			this.CbxSemester.Location = new System.Drawing.Point(369, 95);
 			this.CbxSemester.Name = "CbxSemester";
-			this.CbxSemester.Size = new System.Drawing.Size(120, 22);
-			this.CbxSemester.Items.AddRange(new object[] { "1", "2", "3" });
-
-			// Row 3
-			this.LblScore.Location = new System.Drawing.Point(4, 88);
+			this.CbxSemester.Size = new System.Drawing.Size(120, 21);
+			this.CbxSemester.TabIndex = 10;
+			// 
+			// LblScore
+			// 
+			this.LblScore.Location = new System.Drawing.Point(3, 117);
 			this.LblScore.Name = "LblScore";
 			this.LblScore.Size = new System.Drawing.Size(80, 15);
+			this.LblScore.TabIndex = 11;
 			this.LblScore.Text = "Điểm số:";
-			this.TbxScore.Location = new System.Drawing.Point(4, 106);
+			// 
+			// TbxScore
+			// 
+			this.TbxScore.Location = new System.Drawing.Point(3, 135);
 			this.TbxScore.Name = "TbxScore";
 			this.TbxScore.Size = new System.Drawing.Size(80, 20);
-
-			this.LblScoreLetter.Location = new System.Drawing.Point(104, 88);
+			this.TbxScore.TabIndex = 12;
+			// 
+			// LblScoreLetter
+			// 
+			this.LblScoreLetter.Location = new System.Drawing.Point(103, 117);
 			this.LblScoreLetter.Name = "LblScoreLetter";
 			this.LblScoreLetter.Size = new System.Drawing.Size(80, 15);
+			this.LblScoreLetter.TabIndex = 13;
 			this.LblScoreLetter.Text = "Xếp loại:";
-			this.TbxScoreLetter.Location = new System.Drawing.Point(104, 106);
+			// 
+			// TbxScoreLetter
+			// 
+			this.TbxScoreLetter.Location = new System.Drawing.Point(103, 135);
 			this.TbxScoreLetter.Name = "TbxScoreLetter";
 			this.TbxScoreLetter.Size = new System.Drawing.Size(60, 20);
-
-			// Row 4
-			this.LblAcademicNote.Location = new System.Drawing.Point(4, 128);
+			this.TbxScoreLetter.TabIndex = 14;
+			// 
+			// LblAcademicNote
+			// 
+			this.LblAcademicNote.Location = new System.Drawing.Point(3, 157);
 			this.LblAcademicNote.Name = "LblAcademicNote";
 			this.LblAcademicNote.Size = new System.Drawing.Size(60, 15);
+			this.LblAcademicNote.TabIndex = 15;
 			this.LblAcademicNote.Text = "Ghi chú:";
-			this.TbxAcademicNote.Location = new System.Drawing.Point(4, 146);
+			// 
+			// TbxAcademicNote
+			// 
+			this.TbxAcademicNote.Location = new System.Drawing.Point(3, 175);
 			this.TbxAcademicNote.Name = "TbxAcademicNote";
 			this.TbxAcademicNote.Size = new System.Drawing.Size(710, 20);
-
-			// Buttons
-			this.BtnSaveAcademic.Location = new System.Drawing.Point(625, 168);
+			this.TbxAcademicNote.TabIndex = 16;
+			// 
+			// BtnSaveAcademic
+			// 
+			this.BtnSaveAcademic.Location = new System.Drawing.Point(624, 197);
 			this.BtnSaveAcademic.Name = "BtnSaveAcademic";
 			this.BtnSaveAcademic.Size = new System.Drawing.Size(90, 23);
+			this.BtnSaveAcademic.TabIndex = 17;
 			this.BtnSaveAcademic.Text = "✔ Lưu tạm";
 			this.BtnSaveAcademic.Click += new System.EventHandler(this.BtnSaveAcademic_Click);
-
-			this.BtnCancelAcademic.Location = new System.Drawing.Point(540, 168);
+			// 
+			// BtnCancelAcademic
+			// 
+			this.BtnCancelAcademic.Location = new System.Drawing.Point(539, 197);
 			this.BtnCancelAcademic.Name = "BtnCancelAcademic";
 			this.BtnCancelAcademic.Size = new System.Drawing.Size(75, 23);
+			this.BtnCancelAcademic.TabIndex = 18;
 			this.BtnCancelAcademic.Text = "Hủy";
 			this.BtnCancelAcademic.Click += new System.EventHandler(this.BtnCancelAcademic_Click);
-
+			// 
+			// LblFormName
+			// 
+			this.LblFormName.AutoSize = true;
+			this.LblFormName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+			this.LblFormName.Location = new System.Drawing.Point(3, 4);
+			this.LblFormName.Name = "LblFormName";
+			this.LblFormName.Size = new System.Drawing.Size(176, 17);
+			this.LblFormName.TabIndex = 19;
+			this.LblFormName.Text = "Thêm thông tin học tập";
+			// 
 			// UcStudentAcademic
+			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.DgvAcademic);
@@ -297,10 +395,12 @@
 			this.Name = "UcStudentAcademic";
 			this.Size = new System.Drawing.Size(726, 462);
 			this.PnlAcademicToolbar.ResumeLayout(false);
+			this.PnlAcademicToolbar.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.DgvAcademic)).EndInit();
 			this.PnlAcademicForm.ResumeLayout(false);
 			this.PnlAcademicForm.PerformLayout();
 			this.ResumeLayout(false);
+
 		}
 		#endregion
 
@@ -337,5 +437,12 @@
 		public System.Windows.Forms.DataGridViewTextBoxColumn colSemester;
 		public System.Windows.Forms.DataGridViewTextBoxColumn colScore;
 		public System.Windows.Forms.DataGridViewTextBoxColumn colScoreLetter;
+		public System.Windows.Forms.DataGridViewTextBoxColumn GdvClass;
+		public System.Windows.Forms.DataGridViewTextBoxColumn GdvSchoolYear;
+		public System.Windows.Forms.DataGridViewTextBoxColumn GdvSubject;
+		public System.Windows.Forms.DataGridViewTextBoxColumn GdvSemester;
+		public System.Windows.Forms.DataGridViewTextBoxColumn GdvScore;
+		public System.Windows.Forms.DataGridViewTextBoxColumn GdvScoreLetter;
+		private System.Windows.Forms.Label LblFormName;
 	}
 }

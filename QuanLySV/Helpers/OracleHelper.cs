@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Configuration;
 using Oracle.ManagedDataAccess.Client;
@@ -7,8 +7,15 @@ namespace QuanLySV.Helpers
 {
 	public static class OracleHelper
 	{
-		private static readonly string ConnectionString = ConfigurationManager.ConnectionStrings["OracleConnection"].ConnectionString;
-		
+		private static string ConnectionString
+		{
+			get
+			{
+				var connSetting = ConfigurationManager.ConnectionStrings["OracleConnection"];
+				return connSetting != null ? connSetting.ConnectionString : string.Empty;
+			}
+		}
+
 		public static DataTable ExecuteQuery(string query, OracleParameter[] parameters = null)
 		{
 			DataTable dataTable = new DataTable();

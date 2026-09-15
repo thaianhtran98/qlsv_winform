@@ -219,9 +219,9 @@ namespace QuanLySV.Services
 
 			OracleParameter[] parameters =
 			{
-			 new OracleParameter(":STUDENTID", studentId),
-			 new OracleParameter(":STATUS", StudentAcademic.ACTIVE)
-		  };
+				new OracleParameter(":STUDENTID", studentId),
+				new OracleParameter(":STATUS", StudentAcademic.ACTIVE)
+			};
 
 			DataTable dt = OracleHelper.ExecuteQuery(sql, parameters);
 			foreach (DataRow row in dt.Rows)

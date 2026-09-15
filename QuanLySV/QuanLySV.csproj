@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0" DefaultTargets="Build">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -135,6 +135,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adapters\StudentAcademicAdapter.cs" />
     <Compile Include="Controls\UcFormEdit.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -147,6 +148,7 @@
     <Compile Include="Controls\UcList.Designer.cs">
       <DependentUpon>UcList.cs</DependentUpon>
     </Compile>
+    <Compile Include="Data\StudentAcademicDataSet.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -191,11 +193,38 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-  <Compile Include="Adapters\ReferenceAdapter.cs" /><Compile Include="Adapters\StudentAdapter.cs" /><Compile Include="Data\ReferenceDataSet.cs" /><Compile Include="Data\StudentDataSet.cs" /><Compile Include="Models\ClassInfo.cs" /><Compile Include="Models\SaveResult.cs" /><Compile Include="Models\SchoolYear.cs" /><Compile Include="Models\StudentAcademic.cs" /><Compile Include="Models\Subject.cs" /><Compile Include="Services\AcademicService.cs" /><Compile Include="Controls\UcStudentAcademic.cs"><SubType>UserControl</SubType></Compile><Compile Include="Controls\UcStudentAcademic.Designer.cs"><DependentUpon>UcStudentAcademic.cs</DependentUpon></Compile><Compile Include="Forms\DlgManageReference.cs"><SubType>Form</SubType></Compile><Compile Include="Forms\DlgManageReference.Designer.cs"><DependentUpon>DlgManageReference.cs</DependentUpon></Compile><EmbeddedResource Include="Controls\UcStudentAcademic.resx"><DependentUpon>UcStudentAcademic.cs</DependentUpon></EmbeddedResource><EmbeddedResource Include="Forms\DlgManageReference.resx"><DependentUpon>DlgManageReference.cs</DependentUpon></EmbeddedResource></ItemGroup>
+    <Compile Include="Adapters\ReferenceAdapter.cs" />
+    <Compile Include="Adapters\StudentAdapter.cs" />
+    <Compile Include="Data\ReferenceDataSet.cs" />
+    <Compile Include="Data\StudentDataSet.cs" />
+    <Compile Include="Models\ClassInfo.cs" />
+    <Compile Include="Models\SaveResult.cs" />
+    <Compile Include="Models\SchoolYear.cs" />
+    <Compile Include="Models\StudentAcademic.cs" />
+    <Compile Include="Models\Subject.cs" />
+    <Compile Include="Services\AcademicService.cs" />
+    <Compile Include="Controls\UcStudentAcademic.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UcStudentAcademic.Designer.cs">
+      <DependentUpon>UcStudentAcademic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DlgManageReference.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DlgManageReference.Designer.cs">
+      <DependentUpon>DlgManageReference.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Controls\UcStudentAcademic.resx">
+      <DependentUpon>UcStudentAcademic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DlgManageReference.resx">
+      <DependentUpon>DlgManageReference.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="info.txt" />
     <Content Include="sql.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  
 </Project>

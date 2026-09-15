@@ -26,7 +26,7 @@ namespace QuanLySV.Controls
 			// Tab 2: Khởi tạo thông tin sinh viên cho UC học tập
 			if (isEdit && !string.IsNullOrEmpty(studentId))
 			{
-				ucStudentAcademic1.LoadData(studentId);
+				ucStudentAcademic.LoadData(studentId);
 			}
 
 			TabMain.SelectedIndexChanged += TabMain_SelectedIndexChanged;
@@ -46,16 +46,13 @@ namespace QuanLySV.Controls
 					return;
 				}
 
-				ucStudentAcademic1.LoadData(sid);
+				ucStudentAcademic.LoadData(sid);
 			}
 		}
 
-		// =============================================
-		// TAB 1 — Thông tin sinh viên (FDS Binding)
-		// =============================================
-
 		private void SetupStudentBinding(string studentId, bool isEdit)
 		{
+			// Instance StudentDataSet
 			StudentDataSet ds = StudentDataSet.Instance;
 
 			if (isEdit)
@@ -68,6 +65,13 @@ namespace QuanLySV.Controls
 					return;
 				}
 				TbxStudentId.ReadOnly = true;
+
+				// Instantiate ucStudentAcademic with the current student ID
+				StudentAcademicDataSet studentAcademicDataSet = StudentAcademicDataSet.Instance;
+				if (studentAcademicDataSet != null)
+				{
+					studentAcademicDataSet.FillStudentAcademic(studentId);
+				}
 			}
 			else
 			{
@@ -149,8 +153,6 @@ namespace QuanLySV.Controls
 			row.EndEdit();
 		}
 
-		// ─── Nút Lưu tạm ───────────────────────────────────────────────
-
 		private void BtnSaveTemp_Click(object sender, EventArgs e)
 		{
 			if (!ValidateStudentForm()) return;
@@ -172,15 +174,9 @@ namespace QuanLySV.Controls
 			ds.BindingSource.EndEdit();
 			_isSaved = true;
 
-			MessageBox.Show("Đã lưu tạm vào DataSet. Nhấn '💾 Lưu tất cả' trên danh sách để lưu xuống DB.",
+			MessageBox.Show("Đã lưu tạm vào DataSet. Nhấn 'Lưu' để lưu xuống DB.",
 			    "Lưu tạm", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-			// Navigate back to list
-			Form1 mainForm = this.FindForm() as Form1;
-			if (mainForm != null) mainForm.ShowUcList();
 		}
-
-		// ─── Nút Lưu DB ────────────────────────────────────────────────
 
 		private bool SaveStudentDirect()
 		{
@@ -188,7 +184,6 @@ namespace QuanLySV.Controls
 
 			string sid = TbxStudentId.Text.Trim();
 
-			// Nếu là thêm mới, kiểm tra mã SV đã tồn tại trong DB chưa
 			if (!_isEdit && StudentService.ExistsStudent(sid))
 			{
 				MessageBox.Show("Mã sinh viên '" + sid + "' đã tồn tại trong cơ sở dữ liệu. Vui lòng nhập mã sinh viên khác.",
@@ -205,11 +200,9 @@ namespace QuanLySV.Controls
 			row["NAME"] = TbxName.Text.Trim();
 			row["STATUS"] = Student.ACTIVE;
 
-			// Xử lý số điện thoại: nếu chỉ toàn khoảng trắng hoặc ký tự mask thì coi như rỗng
 			string phone = MskNumberPhone.Text.Replace("-", "").Trim();
 			row["NUMBERPHONE"] = phone.Length > 0 ? (object)MskNumberPhone.Text.Trim() : DBNull.Value;
 
-			// Commit mọi thay đổi từ UI xuống DataRow
 			ds.BindingSource.EndEdit();
 
 			string errorMessage;
@@ -238,11 +231,9 @@ namespace QuanLySV.Controls
 				string prefix = wasEdit ? "Cập nhật" : "Thêm";
 				MessageBox.Show(prefix + " sinh viên thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				string sid = TbxStudentId.Text.Trim();
-				ucStudentAcademic1.LoadData(sid);
+				ucStudentAcademic.LoadData(sid);
 			}
 		}
-
-		// ─── Validation ───────────────────────────────────────────────
 
 		private bool ValidateStudentForm()
 		{

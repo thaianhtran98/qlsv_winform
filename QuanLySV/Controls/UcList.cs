@@ -1,16 +1,18 @@
-﻿using System;
+﻿using QuanLySV.Adapters;
+using QuanLySV.Data;
+using QuanLySV.Helpers;
+using QuanLySV.Models;
+using QuanLySV.Services;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Collections;
-using QuanLySV.Services;
-using QuanLySV.Models;
-using QuanLySV.Helpers;
 
 namespace QuanLySV.Controls
 {
@@ -24,7 +26,7 @@ namespace QuanLySV.Controls
 		{
 			InitializeComponent();
 			_GridViewHelper = new GridViewHelper();
-               ConfigGridView();
+			ConfigGridView();
 			DgvListSV.CellContentClick += EditStudent;
 			DgvListSV.CellContentClick += DeleteStudent;
 			LoadStudent();
@@ -34,11 +36,15 @@ namespace QuanLySV.Controls
 		public void LoadStudent(int status = -1, int sex = -1)
 		{
 			DgvListSV.Rows.Clear();
-			ArrayList students = StudentService.FillStudent(status, sex);
-			if (students == null) return;
+			StudentDataSet ds = StudentDataSet.Instance;
+			ds.Fill(status, sex);
 
-			foreach (Student student in students)
+			DataTable studentTable = ds.StudentTable;
+			if (studentTable == null || studentTable.Rows.Count == 0) return;
+
+			foreach (DataRow row in studentTable.Rows)
 			{
+				Student student = StudentAdapter.MapRowToStudent(row);
 				int rowIndex = DgvListSV.Rows.Add(
 					student.StudentId,
 					student.Name,

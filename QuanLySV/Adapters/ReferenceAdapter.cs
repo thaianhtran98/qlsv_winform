@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Data;
 using QuanLySV.Models;
@@ -9,7 +9,7 @@ namespace QuanLySV.Adapters
 	public class ReferenceAdapter
 	{
 		// =============================================
-		// LỚP HỌC (CLASS)
+		// CLASS
 		// =============================================
 		public void FillClass(DataTable table)
 		{
@@ -28,7 +28,7 @@ namespace QuanLySV.Adapters
 		}
 
 		// =============================================
-		// NĂM HỌC (SCHOOL_YEAR)
+		// SCHOOL YEAR
 		// =============================================
 		public void FillSchoolYear(DataTable table)
 		{
@@ -48,7 +48,7 @@ namespace QuanLySV.Adapters
 		}
 
 		// =============================================
-		// MÔN HỌC (SUBJECT)
+		// SUBJECT
 		// =============================================
 		public void FillSubject(DataTable table)
 		{
@@ -68,7 +68,7 @@ namespace QuanLySV.Adapters
 		}
 
 		// =============================================
-		// LƯU VÀ XÓA (CLASS, SCHOOL_YEAR, SUBJECT)
+		// SAVE & DELETE (CLASS, SCHOOL_YEAR, SUBJECT)
 		// =============================================
 		public bool SaveClass(ClassInfo item, bool isNew, string oldId = null)
 		{

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Data;
 using QuanLySV.Models;
@@ -23,7 +23,7 @@ namespace QuanLySV.Adapters
 				table.Rows.Add(row);
 			}
 
-			// Đánh dấu tất cả row là Unchanged (không phải Added)
+			// Mark all rows as Unchanged (not Added)
 			table.AcceptChanges();
 		}
 
@@ -51,7 +51,7 @@ namespace QuanLySV.Adapters
 							break;
 
 						case DataRowState.Modified:
-							// Lấy STUDENTID gốc (trước khi đổi) để WHERE clause đúng
+							// Get original STUDENTID (before change) for correct WHERE clause
 							string oldId = row["STUDENTID", DataRowVersion.Original].ToString();
 							Student updSv = MapRowToStudent(row);
 							string updErr;

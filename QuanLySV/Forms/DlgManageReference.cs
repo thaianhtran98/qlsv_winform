@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
@@ -40,6 +40,7 @@ namespace QuanLySV.Forms
 		public DlgManageReference(ReferenceTab initialTab = ReferenceTab.Class)
 		{
 			InitializeComponent();
+			ApplyAppColors();
 
 			SetupGridViews();
 			LoadAllData();
@@ -56,6 +57,31 @@ namespace QuanLySV.Forms
 					TabReference.SelectedTab = TpgSubject;
 					break;
 			}
+		}
+
+		private void ApplyAppColors()
+		{
+			// Class Tab
+			AppColor.ApplyButtonAdd(BtnAddClass);
+			AppColor.ApplyButtonEdit(BtnEditClass);
+			AppColor.ApplyButtonDelete(BtnDeleteClass);
+			AppColor.ApplyButtonCancel(BtnClearClass);
+
+			// School Year Tab
+			AppColor.ApplyButtonAdd(BtnAddSchoolYear);
+			AppColor.ApplyButtonEdit(BtnEditSchoolYear);
+			AppColor.ApplyButtonDelete(BtnDeleteSchoolYear);
+			AppColor.ApplyButtonCancel(BtnClearSchoolYear);
+
+			// Subject Tab
+			AppColor.ApplyButtonAdd(BtnAddSubject);
+			AppColor.ApplyButtonEdit(BtnEditSubject);
+			AppColor.ApplyButtonDelete(BtnDeleteSubject);
+			AppColor.ApplyButtonCancel(BtnClearSubject);
+
+			// Dialog Footer Buttons
+			AppColor.ApplyButtonSave(BtnSelect);
+			AppColor.ApplyButtonCancel(BtnClose);
 		}
 
 		private void SetupGridViews()
@@ -92,13 +118,14 @@ namespace QuanLySV.Forms
 		private void SetupGrid(DataGridView grid)
 		{
 			grid.EnableHeadersVisualStyles = false;
-			grid.ColumnHeadersDefaultCellStyle.BackColor = AppColors.GridHeader;
-			grid.ColumnHeadersDefaultCellStyle.ForeColor = AppColors.TextDark;
+			grid.ColumnHeadersDefaultCellStyle.BackColor = AppColor.GridHeader;
+			grid.ColumnHeadersDefaultCellStyle.ForeColor = AppColor.TextDark;
 			grid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 			grid.ColumnHeadersHeight = 32;
 			grid.RowTemplate.Height = 28;
-			grid.DefaultCellStyle.SelectionBackColor = AppColors.Selection;
-			grid.DefaultCellStyle.SelectionForeColor = AppColors.TextDark;
+			grid.DefaultCellStyle.SelectionBackColor = AppColor.Selection;
+			grid.DefaultCellStyle.SelectionForeColor = AppColor.TextDark;
+			grid.BackgroundColor = AppColor.Surface;
 		}
 
 		private void LoadAllData()
@@ -110,7 +137,7 @@ namespace QuanLySV.Forms
 		}
 
 		// ====================================================================
-		// 1. LỚP HỌC (CLASS)
+		// 1. CLASS
 		// ====================================================================
 
 		private void FillClassList()
@@ -265,7 +292,7 @@ namespace QuanLySV.Forms
 		}
 
 		// ====================================================================
-		// 2. NĂM HỌC (SCHOOL_YEAR)
+		// 2. SCHOOL YEAR
 		// ====================================================================
 
 		private void FillSchoolYearList()
@@ -453,7 +480,7 @@ namespace QuanLySV.Forms
 		}
 
 		// ====================================================================
-		// 3. MÔN HỌC (SUBJECT)
+		// 3. SUBJECT
 		// ====================================================================
 
 		private void FillSubjectList()

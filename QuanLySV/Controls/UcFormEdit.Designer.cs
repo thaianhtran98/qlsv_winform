@@ -1,4 +1,4 @@
-﻿namespace QuanLySV.Controls
+namespace QuanLySV.Controls
 {
 	partial class UcFormEdit
 	{
@@ -47,10 +47,13 @@
 			this.TabPageAcademic = new System.Windows.Forms.TabPage();
 			this.ucStudentAcademic = new QuanLySV.Controls.UcStudentAcademic();
 			this.BtnSaveAll = new System.Windows.Forms.Button();
+			this.PnlBottomActions = new System.Windows.Forms.Panel();
+			this.BtnSaveAllTabs = new System.Windows.Forms.Button();
 			this.TabMain.SuspendLayout();
 			this.TabPageStudent.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.TabPageAcademic.SuspendLayout();
+			this.PnlBottomActions.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// TabMain
@@ -323,13 +326,37 @@
 			// 
 			// BtnSaveAll
 			// 
-			this.BtnSaveAll.Location = new System.Drawing.Point(569, 425);
+			this.BtnSaveAll.ForeColor = System.Drawing.Color.Blue;
+			this.BtnSaveAll.Location = new System.Drawing.Point(570, 425);
 			this.BtnSaveAll.Name = "BtnSaveAll";
-			this.BtnSaveAll.Size = new System.Drawing.Size(75, 23);
+			this.BtnSaveAll.Size = new System.Drawing.Size(75, 25);
 			this.BtnSaveAll.TabIndex = 48;
 			this.BtnSaveAll.Text = "Lưu";
 			this.BtnSaveAll.UseVisualStyleBackColor = true;
 			this.BtnSaveAll.Click += new System.EventHandler(this.SaveStudent);
+			// 
+			// PnlBottomActions
+			// 
+			this.PnlBottomActions.BackColor = System.Drawing.SystemColors.Control;
+			this.PnlBottomActions.Controls.Add(this.BtnSaveAllTabs);
+			this.PnlBottomActions.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.PnlBottomActions.Location = new System.Drawing.Point(0, 430);
+			this.PnlBottomActions.Name = "PnlBottomActions";
+			this.PnlBottomActions.Size = new System.Drawing.Size(655, 45);
+			this.PnlBottomActions.TabIndex = 1;
+			// 
+			// BtnSaveAllTabs
+			// 
+			this.BtnSaveAllTabs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.BtnSaveAllTabs.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.BtnSaveAllTabs.ForeColor = System.Drawing.Color.Blue;
+			this.BtnSaveAllTabs.Location = new System.Drawing.Point(475, 10);
+			this.BtnSaveAllTabs.Name = "BtnSaveAllTabs";
+			this.BtnSaveAllTabs.Size = new System.Drawing.Size(170, 30);
+			this.BtnSaveAllTabs.TabIndex = 0;
+			this.BtnSaveAllTabs.Text = "Lưu toàn bộ (2 Tab)";
+			this.BtnSaveAllTabs.UseVisualStyleBackColor = true;
+			this.BtnSaveAllTabs.Click += new System.EventHandler(this.BtnSaveAllTabs_Click);
 			// 
 			// UcFormEdit
 			// 
@@ -337,6 +364,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoScroll = true;
 			this.Controls.Add(this.TabMain);
+			this.Controls.Add(this.PnlBottomActions);
 			this.Name = "UcFormEdit";
 			this.Size = new System.Drawing.Size(655, 477);
 			this.TabMain.ResumeLayout(false);
@@ -344,13 +372,14 @@
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
 			this.TabPageAcademic.ResumeLayout(false);
+			this.PnlBottomActions.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
 
-				private System.Windows.Forms.TabControl TabMain;
+		private System.Windows.Forms.TabControl TabMain;
 		private System.Windows.Forms.TabPage TabPageStudent;
 		private System.Windows.Forms.TabPage TabPageAcademic;
 		private UcStudentAcademic ucStudentAcademic;
@@ -380,5 +409,7 @@
 		private System.Windows.Forms.Label LblBirthOfDate;
 		private System.Windows.Forms.Label LblName;
 		private System.Windows.Forms.Button BtnSaveAll;
+		private System.Windows.Forms.Panel PnlBottomActions;
+		private System.Windows.Forms.Button BtnSaveAllTabs;
 	}
 }

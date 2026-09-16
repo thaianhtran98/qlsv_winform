@@ -1,14 +1,104 @@
-﻿CREATE TABLE STUDENT (
-    STUDENTID VARCHAR(20) PRIMARY KEY,
-    NAME VARCHAR(100) NOT NULL,
-    SEX INT,               -- sex: 1 (male), 0 (female)
-    BIRTHOFDATE DATE,
-    BIRTHLOCAL VARCHAR(200),
-    VNEID VARCHAR(12) UNIQUE,
-    DATEOFISSUE DATE,
-    LOCALOFISSUE VARCHAR(200),
-    LOCAL VARCHAR(255),
-    PLACEOFRESIDENCE VARCHAR(255),
-    NUMBERPHONE VARCHAR(15),
-    STATUS INT             -- 1 (active), 0 (inactive)
+-- ====================================================================
+-- HỆ THỐNG QUẢN LÝ SINH VIÊN (Oracle Database)
+-- Cập nhật toàn bộ Schema theo đúng source code C# / WinForms hiện tại
+-- Bao gồm 5 bảng: STUDENT, CLASS, SCHOOL_YEAR, SUBJECT, STUDENT_ACADEMIC
+-- ====================================================================
+
+-- 1. BẢNG SINH VIÊN (STUDENT)
+CREATE TABLE STUDENT (
+    STUDENTID           VARCHAR2(20) PRIMARY KEY,
+    NAME                VARCHAR2(100) NOT NULL,
+    SEX                 NUMBER(1) DEFAULT 0,              -- 1: Nam (male), 0: Nữ (female)
+    BIRTHOFDATE         DATE,
+    BIRTHLOCAL          VARCHAR2(200),
+    VNEID               VARCHAR2(12) UNIQUE,
+    DATEOFISSUE         DATE,
+    LOCALOFISSUE        VARCHAR2(200),
+    LOCAL               VARCHAR2(255),
+    PLACEOFRESIDENCE    VARCHAR2(255),
+    NUMBERPHONE         VARCHAR2(15),
+    STATUS              NUMBER(1) DEFAULT 1               -- 1: Đang hoạt động (active), 0: Ngưng hoạt động (inactive)
 );
+
+-- 2. BẢNG LỚP HỌC (CLASS)
+CREATE TABLE CLASS (
+    CLASSID             VARCHAR2(20) PRIMARY KEY,
+    CLASSNAME           VARCHAR2(100) NOT NULL,
+    DESCRIPTION         VARCHAR2(500),
+    STATUS              NUMBER(1) DEFAULT 1               -- 1: Active, 0: Inactive
+);
+
+-- 3. BẢNG NĂM HỌC (SCHOOL_YEAR)
+CREATE TABLE SCHOOL_YEAR (
+    SCHOOLYEARID        VARCHAR2(20) PRIMARY KEY,
+    SCHOOLYEARNAME      VARCHAR2(100) NOT NULL,
+    START_YEAR          NUMBER(4),
+    END_YEAR            NUMBER(4),
+    STATUS              NUMBER(1) DEFAULT 1               -- 1: Active, 0: Inactive
+);
+
+-- 4. BẢNG MÔN HỌC (SUBJECT)
+CREATE TABLE SUBJECT (
+    SUBJECTID           VARCHAR2(20) PRIMARY KEY,
+    SUBJECTNAME         VARCHAR2(100) NOT NULL,
+    CREDITS             NUMBER(2) DEFAULT 0,
+    DESCRIPTION         VARCHAR2(500),
+    STATUS              NUMBER(1) DEFAULT 1               -- 1: Active, 0: Inactive
+);
+
+-- 5. BẢNG KẾT QUẢ HỌC TẬP (STUDENT_ACADEMIC)
+CREATE TABLE STUDENT_ACADEMIC (
+    ACADEMICID          NUMBER PRIMARY KEY,
+    STUDENTID           VARCHAR2(20) NOT NULL,
+    CLASSID             VARCHAR2(20),
+    SCHOOLYEARID        VARCHAR2(20),
+    SUBJECTID           VARCHAR2(20),
+    SCORE               NUMBER(4, 2),                     -- Điểm số (ví dụ: 8.50, 10.00)
+    SCORE_LETTER        VARCHAR2(10),                     -- Điểm chữ (A, B, C, D, F)
+    SEMESTER            NUMBER(2),                        -- Học kỳ (1, 2, 3)
+    NOTE                VARCHAR2(500),
+    STATUS              NUMBER(1) DEFAULT 1,              -- 1: Active, 0: Inactive
+    CONSTRAINT FK_ACADEMIC_STUDENT FOREIGN KEY (STUDENTID) REFERENCES STUDENT(STUDENTID) ON DELETE CASCADE,
+    CONSTRAINT FK_ACADEMIC_CLASS FOREIGN KEY (CLASSID) REFERENCES CLASS(CLASSID),
+    CONSTRAINT FK_ACADEMIC_SCHOOLYEAR FOREIGN KEY (SCHOOLYEARID) REFERENCES SCHOOL_YEAR(SCHOOLYEARID),
+    CONSTRAINT FK_ACADEMIC_SUBJECT FOREIGN KEY (SUBJECTID) REFERENCES SUBJECT(SUBJECTID)
+);
+
+-- 6. SEQUENCE & TRIGGER TỰ ĐỘNG SINH KHÓA CHÍNH ACADEMICID
+CREATE SEQUENCE SEQ_STUDENT_ACADEMIC 
+START WITH 1 
+INCREMENT BY 1 
+NOCACHE 
+NOCYCLE;
+
+CREATE OR REPLACE TRIGGER TRG_STUDENT_ACADEMIC_BI
+BEFORE INSERT ON STUDENT_ACADEMIC
+FOR EACH ROW
+BEGIN
+    IF :NEW.ACADEMICID IS NULL OR :NEW.ACADEMICID <= 0 THEN
+        SELECT SEQ_STUDENT_ACADEMIC.NEXTVAL INTO :NEW.ACADEMICID FROM DUAL;
+    END IF;
+END;
+/
+
+-- ====================================================================
+-- DỮ LIỆU MẪU BAN ĐẦU (SEED DATA CHO DANH MỤC & SINH VIÊN)
+-- ====================================================================
+
+-- Dữ liệu lớp học
+INSERT INTO CLASS (CLASSID, CLASSNAME, DESCRIPTION, STATUS) VALUES ('LH01', 'Công nghệ thông tin K46', 'Lớp CNTT', 1);
+INSERT INTO CLASS (CLASSID, CLASSNAME, DESCRIPTION, STATUS) VALUES ('LH02', 'Hệ thống thông tin K46', 'Lớp HTTT', 1);
+INSERT INTO CLASS (CLASSID, CLASSNAME, DESCRIPTION, STATUS) VALUES ('LH03', 'Khoa học máy tính K46', 'Lớp KHMT', 1);
+
+-- Dữ liệu năm học
+INSERT INTO SCHOOL_YEAR (SCHOOLYEARID, SCHOOLYEARNAME, START_YEAR, END_YEAR, STATUS) VALUES ('NH2024-2025', '2024 - 2025', 2024, 2025, 1);
+INSERT INTO SCHOOL_YEAR (SCHOOLYEARID, SCHOOLYEARNAME, START_YEAR, END_YEAR, STATUS) VALUES ('NH2025-2026', '2025 - 2026', 2025, 2026, 1);
+INSERT INTO SCHOOL_YEAR (SCHOOLYEARID, SCHOOLYEARNAME, START_YEAR, END_YEAR, STATUS) VALUES ('NH2026-2027', '2026 - 2027', 2026, 2027, 1);
+
+-- Dữ liệu môn học
+INSERT INTO SUBJECT (SUBJECTID, SUBJECTNAME, CREDITS, DESCRIPTION, STATUS) VALUES ('MH01', 'Lập trình C# WinForms', 3, 'Lập trình ứng dụng Windows Forms', 1);
+INSERT INTO SUBJECT (SUBJECTID, SUBJECTNAME, CREDITS, DESCRIPTION, STATUS) VALUES ('MH02', 'Cơ sở dữ liệu Oracle', 3, 'Quản trị và lập trình CSDL Oracle', 1);
+INSERT INTO SUBJECT (SUBJECTID, SUBJECTNAME, CREDITS, DESCRIPTION, STATUS) VALUES ('MH03', 'Cấu trúc dữ liệu và giải thuật', 4, 'Môn cơ sở ngành', 1);
+INSERT INTO SUBJECT (SUBJECTID, SUBJECTNAME, CREDITS, DESCRIPTION, STATUS) VALUES ('MH04', 'Kiến trúc phần mềm', 3, 'Thiết kế và kiến trúc hệ thống', 1);
+
+COMMIT;

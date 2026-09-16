@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Windows.Forms;
 using QuanLySV.Data;
+using QuanLySV.Helpers;
 using QuanLySV.Models;
 using QuanLySV.Services;
 
@@ -16,20 +17,31 @@ namespace QuanLySV.Controls
 		public UcFormEdit(string studentId, bool isEdit)
 		{
 			InitializeComponent();
+			ApplyAppColors();
 			_studentId = studentId;
 			_isEdit = isEdit;
 			_isSaved = isEdit;
 
-			// Tab 1: Binding sinh viên vào StudentDataSet.BindingSource
+			// Tab 1: Bind student data to StudentDataSet.BindingSource
 			SetupStudentBinding(studentId, isEdit);
 
-			// Tab 2: Khởi tạo thông tin sinh viên cho UC học tập
+			// Tab 2: Initialize student information for academic UC
 			if (isEdit && !string.IsNullOrEmpty(studentId))
 			{
 				ucStudentAcademic.LoadData(studentId);
 			}
+			else
+			{
+				ucStudentAcademic.ClearData();
+			}
 
 			TabMain.SelectedIndexChanged += TabMain_SelectedIndexChanged;
+		}
+
+		private void ApplyAppColors()
+		{
+			AppColor.ApplyButtonSave(BtnSaveAll);
+			AppColor.ApplyButtonSave(BtnSaveAllTabs);
 		}
 
 		private void TabMain_SelectedIndexChanged(object sender, EventArgs e)
@@ -70,12 +82,14 @@ namespace QuanLySV.Controls
 				StudentAcademicDataSet studentAcademicDataSet = StudentAcademicDataSet.Instance;
 				if (studentAcademicDataSet != null)
 				{
+					studentAcademicDataSet.ClearStudentAcademic();
 					studentAcademicDataSet.FillStudentAcademic(studentId);
 				}
 			}
 			else
 			{
 				ds.AddNewRow();
+				StudentAcademicDataSet.Instance.ClearStudentAcademic();
 			}
 
 			BindControl(TbxStudentId, "Text", "STUDENTID");
@@ -130,6 +144,7 @@ namespace QuanLySV.Controls
 			{
 				ClearStudentBindings();
 				StudentDataSet.Instance.CancelPendingRow();
+				StudentAcademicDataSet.Instance.ClearStudentAcademic();
 			}
 		}
 
@@ -250,6 +265,40 @@ namespace QuanLySV.Controls
 				return false;
 			}
 			return true;
+		}
+
+		private void BtnSaveAllTabs_Click(object sender, EventArgs e)
+		{
+			if (!ValidateStudentForm())
+			{
+				TabMain.SelectedTab = TabPageStudent;
+				return;
+			}
+			// Tab 1 save
+			bool wasEdit = _isEdit;
+			if (!SaveStudentDirect())
+			{
+				return;
+			}
+
+			string sid = TbxStudentId.Text.Trim();
+
+			// Tab 2 save
+			string academicError = null;
+			bool academicSaved = ucStudentAcademic.SaveAcademicsToDb(sid, out academicError);
+			if (!academicSaved)
+			{
+				MessageBox.Show("Lưu hồ sơ sinh viên thành công, nhưng lưu kết quả học tập thất bại:\n" + (academicError ?? "Vui lòng kiểm tra lại."),
+					"Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				TabMain.SelectedTab = TabPageAcademic;
+				return;
+			}
+
+			string prefix = wasEdit ? "Cập nhật" : "Thêm mới";
+			MessageBox.Show(prefix + " toàn bộ thông tin sinh viên và kết quả học tập thành công!",
+				"Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+			ucStudentAcademic.LoadData(sid);
 		}
 	}
 }

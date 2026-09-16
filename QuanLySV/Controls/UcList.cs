@@ -1,4 +1,4 @@
-﻿using QuanLySV.Adapters;
+using QuanLySV.Adapters;
 using QuanLySV.Data;
 using QuanLySV.Helpers;
 using QuanLySV.Models;
@@ -158,8 +158,12 @@ namespace QuanLySV.Controls
 			DgvListSV.AllowUserToAddRows = false;
 			DgvListSV.AllowUserToDeleteRows = false;
 			DgvListSV.AllowUserToResizeRows = false;
-			DgvListSV.BackgroundColor = Color.White;
+			DgvListSV.BackgroundColor = AppColor.Surface;
 			DgvListSV.BorderStyle = BorderStyle.None;
+			DgvListSV.DefaultCellStyle.SelectionBackColor = AppColor.Selection;
+			DgvListSV.DefaultCellStyle.SelectionForeColor = AppColor.TextDark;
+			DgvListSV.ColumnHeadersDefaultCellStyle.BackColor = AppColor.GridHeader;
+			DgvListSV.ColumnHeadersDefaultCellStyle.ForeColor = AppColor.TextDark;
 			_GridViewHelper.SetFixedColumn(DgvListSV.Columns["MSSV"], 65);
 			_GridViewHelper.SetFixedColumn(DgvListSV.Columns["GgvSex"], 70);
 			_GridViewHelper.SetFixedColumn(DgvListSV.Columns["GgvBirthOfDate"], 90);

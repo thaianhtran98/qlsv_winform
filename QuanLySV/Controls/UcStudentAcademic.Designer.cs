@@ -1,4 +1,4 @@
-﻿namespace QuanLySV.Controls
+namespace QuanLySV.Controls
 {
 	partial class UcStudentAcademic
 	{
@@ -48,7 +48,7 @@
 			this.TbxScoreLetter = new System.Windows.Forms.TextBox();
 			this.LblAcademicNote = new System.Windows.Forms.Label();
 			this.TbxAcademicNote = new System.Windows.Forms.TextBox();
-			this.BtnSaveAcademic = new System.Windows.Forms.Button();
+			this.BtnSaveTempAcademic = new System.Windows.Forms.Button();
 			this.BtnCancelAcademic = new System.Windows.Forms.Button();
 			this.LblFormName = new System.Windows.Forms.Label();
 			this.PnlAcademicToolbar.SuspendLayout();
@@ -71,43 +71,47 @@
 			// 
 			// BtnAddAcademic
 			// 
-			this.BtnAddAcademic.Location = new System.Drawing.Point(4, 6);
+			this.BtnAddAcademic.ForeColor = System.Drawing.Color.Blue;
+			this.BtnAddAcademic.Location = new System.Drawing.Point(5, 5);
 			this.BtnAddAcademic.Name = "BtnAddAcademic";
-			this.BtnAddAcademic.Size = new System.Drawing.Size(75, 23);
+			this.BtnAddAcademic.Size = new System.Drawing.Size(75, 25);
 			this.BtnAddAcademic.TabIndex = 0;
-			this.BtnAddAcademic.Text = "➕ Thêm";
+			this.BtnAddAcademic.Text = "Thêm";
 			this.BtnAddAcademic.UseVisualStyleBackColor = true;
 			this.BtnAddAcademic.Click += new System.EventHandler(this.BtnAddAcademic_Click);
 			// 
 			// BtnEditAcademic
 			// 
 			this.BtnEditAcademic.Enabled = false;
-			this.BtnEditAcademic.Location = new System.Drawing.Point(88, 6);
+			this.BtnEditAcademic.ForeColor = System.Drawing.Color.Black;
+			this.BtnEditAcademic.Location = new System.Drawing.Point(85, 5);
 			this.BtnEditAcademic.Name = "BtnEditAcademic";
-			this.BtnEditAcademic.Size = new System.Drawing.Size(75, 23);
+			this.BtnEditAcademic.Size = new System.Drawing.Size(75, 25);
 			this.BtnEditAcademic.TabIndex = 1;
-			this.BtnEditAcademic.Text = "✏ Sửa";
+			this.BtnEditAcademic.Text = "Sửa";
 			this.BtnEditAcademic.UseVisualStyleBackColor = true;
 			this.BtnEditAcademic.Click += new System.EventHandler(this.BtnEditAcademic_Click);
 			// 
 			// BtnDeleteAcademic
 			// 
 			this.BtnDeleteAcademic.Enabled = false;
-			this.BtnDeleteAcademic.Location = new System.Drawing.Point(171, 6);
+			this.BtnDeleteAcademic.ForeColor = System.Drawing.Color.Red;
+			this.BtnDeleteAcademic.Location = new System.Drawing.Point(165, 5);
 			this.BtnDeleteAcademic.Name = "BtnDeleteAcademic";
-			this.BtnDeleteAcademic.Size = new System.Drawing.Size(75, 23);
+			this.BtnDeleteAcademic.Size = new System.Drawing.Size(75, 25);
 			this.BtnDeleteAcademic.TabIndex = 2;
-			this.BtnDeleteAcademic.Text = "✖ Xóa";
+			this.BtnDeleteAcademic.Text = "Xóa";
 			this.BtnDeleteAcademic.UseVisualStyleBackColor = true;
 			this.BtnDeleteAcademic.Click += new System.EventHandler(this.BtnDeleteAcademic_Click);
 			// 
 			// BtnSaveToDb
 			// 
-			this.BtnSaveToDb.Location = new System.Drawing.Point(260, 6);
+			this.BtnSaveToDb.ForeColor = System.Drawing.Color.Blue;
+			this.BtnSaveToDb.Location = new System.Drawing.Point(245, 5);
 			this.BtnSaveToDb.Name = "BtnSaveToDb";
-			this.BtnSaveToDb.Size = new System.Drawing.Size(115, 23);
+			this.BtnSaveToDb.Size = new System.Drawing.Size(115, 25);
 			this.BtnSaveToDb.TabIndex = 3;
-			this.BtnSaveToDb.Text = "💾 Lưu vào DB";
+			this.BtnSaveToDb.Text = "Lưu vào DB";
 			this.BtnSaveToDb.UseVisualStyleBackColor = true;
 			this.BtnSaveToDb.Click += new System.EventHandler(this.BtnSaveToDb_Click);
 			// 
@@ -116,7 +120,7 @@
 			this.LblPendingAcademic.AutoSize = true;
 			this.LblPendingAcademic.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.LblPendingAcademic.ForeColor = System.Drawing.Color.DarkOrange;
-			this.LblPendingAcademic.Location = new System.Drawing.Point(390, 11);
+			this.LblPendingAcademic.Location = new System.Drawing.Point(365, 10);
 			this.LblPendingAcademic.Name = "LblPendingAcademic";
 			this.LblPendingAcademic.Size = new System.Drawing.Size(0, 13);
 			this.LblPendingAcademic.TabIndex = 4;
@@ -208,7 +212,7 @@
 			this.PnlAcademicForm.Controls.Add(this.TbxScoreLetter);
 			this.PnlAcademicForm.Controls.Add(this.LblAcademicNote);
 			this.PnlAcademicForm.Controls.Add(this.TbxAcademicNote);
-			this.PnlAcademicForm.Controls.Add(this.BtnSaveAcademic);
+			this.PnlAcademicForm.Controls.Add(this.BtnSaveTempAcademic);
 			this.PnlAcademicForm.Controls.Add(this.BtnCancelAcademic);
 			this.PnlAcademicForm.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.PnlAcademicForm.Location = new System.Drawing.Point(0, 227);
@@ -235,11 +239,13 @@
 			// 
 			// BtnAddClass
 			// 
-			this.BtnAddClass.Location = new System.Drawing.Point(328, 55);
+			this.BtnAddClass.ForeColor = System.Drawing.Color.Blue;
+			this.BtnAddClass.Location = new System.Drawing.Point(330, 55);
 			this.BtnAddClass.Name = "BtnAddClass";
-			this.BtnAddClass.Size = new System.Drawing.Size(25, 23);
+			this.BtnAddClass.Size = new System.Drawing.Size(25, 25);
 			this.BtnAddClass.TabIndex = 2;
 			this.BtnAddClass.Text = "+";
+			this.BtnAddClass.UseVisualStyleBackColor = true;
 			this.BtnAddClass.Click += new System.EventHandler(this.BtnAddClass_Click);
 			// 
 			// LblSchoolYear
@@ -260,11 +266,13 @@
 			// 
 			// BtnAddSchoolYear
 			// 
-			this.BtnAddSchoolYear.Location = new System.Drawing.Point(689, 55);
+			this.BtnAddSchoolYear.ForeColor = System.Drawing.Color.Blue;
+			this.BtnAddSchoolYear.Location = new System.Drawing.Point(690, 55);
 			this.BtnAddSchoolYear.Name = "BtnAddSchoolYear";
-			this.BtnAddSchoolYear.Size = new System.Drawing.Size(25, 23);
+			this.BtnAddSchoolYear.Size = new System.Drawing.Size(25, 25);
 			this.BtnAddSchoolYear.TabIndex = 5;
 			this.BtnAddSchoolYear.Text = "+";
+			this.BtnAddSchoolYear.UseVisualStyleBackColor = true;
 			this.BtnAddSchoolYear.Click += new System.EventHandler(this.BtnAddSchoolYear_Click);
 			// 
 			// LblSubject
@@ -285,11 +293,13 @@
 			// 
 			// BtnAddSubject
 			// 
-			this.BtnAddSubject.Location = new System.Drawing.Point(328, 95);
+			this.BtnAddSubject.ForeColor = System.Drawing.Color.Blue;
+			this.BtnAddSubject.Location = new System.Drawing.Point(330, 95);
 			this.BtnAddSubject.Name = "BtnAddSubject";
-			this.BtnAddSubject.Size = new System.Drawing.Size(25, 23);
+			this.BtnAddSubject.Size = new System.Drawing.Size(25, 25);
 			this.BtnAddSubject.TabIndex = 8;
 			this.BtnAddSubject.Text = "+";
+			this.BtnAddSubject.UseVisualStyleBackColor = true;
 			this.BtnAddSubject.Click += new System.EventHandler(this.BtnAddSubject_Click);
 			// 
 			// LblSemester
@@ -357,22 +367,26 @@
 			this.TbxAcademicNote.Size = new System.Drawing.Size(710, 20);
 			this.TbxAcademicNote.TabIndex = 16;
 			// 
-			// BtnSaveAcademic
+			// BtnSaveTempAcademic
 			// 
-			this.BtnSaveAcademic.Location = new System.Drawing.Point(624, 197);
-			this.BtnSaveAcademic.Name = "BtnSaveAcademic";
-			this.BtnSaveAcademic.Size = new System.Drawing.Size(90, 23);
-			this.BtnSaveAcademic.TabIndex = 17;
-			this.BtnSaveAcademic.Text = "✔ Lưu tạm";
-			this.BtnSaveAcademic.Click += new System.EventHandler(this.BtnSaveAcademic_Click);
+			this.BtnSaveTempAcademic.ForeColor = System.Drawing.Color.Blue;
+			this.BtnSaveTempAcademic.Location = new System.Drawing.Point(625, 195);
+			this.BtnSaveTempAcademic.Name = "BtnSaveTempAcademic";
+			this.BtnSaveTempAcademic.Size = new System.Drawing.Size(90, 25);
+			this.BtnSaveTempAcademic.TabIndex = 17;
+			this.BtnSaveTempAcademic.Text = "Lưu tạm";
+			this.BtnSaveTempAcademic.UseVisualStyleBackColor = true;
+			this.BtnSaveTempAcademic.Click += new System.EventHandler(this.BtnSaveTempAcademic_Click);
 			// 
 			// BtnCancelAcademic
 			// 
-			this.BtnCancelAcademic.Location = new System.Drawing.Point(539, 197);
+			this.BtnCancelAcademic.ForeColor = System.Drawing.Color.Black;
+			this.BtnCancelAcademic.Location = new System.Drawing.Point(540, 195);
 			this.BtnCancelAcademic.Name = "BtnCancelAcademic";
-			this.BtnCancelAcademic.Size = new System.Drawing.Size(75, 23);
+			this.BtnCancelAcademic.Size = new System.Drawing.Size(75, 25);
 			this.BtnCancelAcademic.TabIndex = 18;
 			this.BtnCancelAcademic.Text = "Hủy";
+			this.BtnCancelAcademic.UseVisualStyleBackColor = true;
 			this.BtnCancelAcademic.Click += new System.EventHandler(this.BtnCancelAcademic_Click);
 			// 
 			// LblFormName
@@ -429,7 +443,7 @@
 		public System.Windows.Forms.TextBox TbxScoreLetter;
 		public System.Windows.Forms.Label LblAcademicNote;
 		public System.Windows.Forms.TextBox TbxAcademicNote;
-		public System.Windows.Forms.Button BtnSaveAcademic;
+		public System.Windows.Forms.Button BtnSaveTempAcademic;
 		public System.Windows.Forms.Button BtnCancelAcademic;
 		public System.Windows.Forms.DataGridViewTextBoxColumn colClass;
 		public System.Windows.Forms.DataGridViewTextBoxColumn colSchoolYear;

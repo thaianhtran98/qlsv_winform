@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Windows.Forms;
 using QuanLySV.Adapters;
@@ -48,7 +48,7 @@ namespace QuanLySV.Data
 			table.Columns.Add("NUMBERPHONE", typeof(string));
 			table.Columns.Add("STATUS", typeof(int));
 
-			// Set PrimaryKey để Find() hoạt động
+			// Set PrimaryKey so that Find() works
 			table.PrimaryKey = new DataColumn[] { colid };
 			return table;
 		}

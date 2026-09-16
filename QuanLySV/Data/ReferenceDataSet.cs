@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Windows.Forms;
 using QuanLySV.Adapters;
@@ -15,7 +15,7 @@ namespace QuanLySV.Data
 		public DataTable SchoolYearTable { get; private set; }
 		public DataTable SubjectTable { get; private set; }
 
-		// BindingSources cho các ComboBox bind vào
+		// BindingSources for ComboBox binding
 		public BindingSource ClassBindingSource { get; private set; }
 		public BindingSource SchoolYearBindingSource { get; private set; }
 		public BindingSource SubjectBindingSource { get; private set; }

@@ -20,9 +20,17 @@ namespace QuanLySV
 		public Form1()
 		{
 			InitializeComponent();
+			ApplyAppColors();
 			this.Load += Form1_Load;
 			UserControlCurrent = new UcList();
 			ShowUc(UserControlCurrent);
+		}
+
+		private void ApplyAppColors()
+		{
+			AppColor.ApplyButtonAdd(BtnCreate);
+			BtnList.ForeColor = AppColor.BtnBlack;
+			BtnManageReference.ForeColor = AppColor.BtnBlack;
 		}
 
 		private void Form1_Load(object sender, EventArgs e)

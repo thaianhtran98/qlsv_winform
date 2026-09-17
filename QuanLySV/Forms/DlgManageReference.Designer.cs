@@ -191,7 +191,7 @@
 			// 
 			// LblClassDesc
 			// 
-			this.LblClassDesc.AutoSize = true;
+			this.LblClassDesc.AutoSize = false;
 			this.LblClassDesc.Location = new System.Drawing.Point(12, 48);
 			this.LblClassDesc.Name = "LblClassDesc";
 			this.LblClassDesc.Size = new System.Drawing.Size(41, 15);
@@ -207,7 +207,7 @@
 			// 
 			// LblClassName
 			// 
-			this.LblClassName.AutoSize = true;
+			this.LblClassName.AutoSize = false;
 			this.LblClassName.Location = new System.Drawing.Point(250, 15);
 			this.LblClassName.Name = "LblClassName";
 			this.LblClassName.Size = new System.Drawing.Size(48, 15);
@@ -223,7 +223,7 @@
 			// 
 			// LblClassId
 			// 
-			this.LblClassId.AutoSize = true;
+			this.LblClassId.AutoSize = false;
 			this.LblClassId.Location = new System.Drawing.Point(12, 15);
 			this.LblClassId.Name = "LblClassId";
 			this.LblClassId.Size = new System.Drawing.Size(46, 15);
@@ -332,7 +332,7 @@
 			// 
 			// LblEndYear
 			// 
-			this.LblEndYear.AutoSize = true;
+			this.LblEndYear.AutoSize = false;
 			this.LblEndYear.Location = new System.Drawing.Point(255, 48);
 			this.LblEndYear.Name = "LblEndYear";
 			this.LblEndYear.Size = new System.Drawing.Size(83, 15);
@@ -352,7 +352,7 @@
 			// 
 			// LblStartYear
 			// 
-			this.LblStartYear.AutoSize = true;
+			this.LblStartYear.AutoSize = false;
 			this.LblStartYear.Location = new System.Drawing.Point(12, 48);
 			this.LblStartYear.Name = "LblStartYear";
 			this.LblStartYear.Size = new System.Drawing.Size(81, 15);
@@ -368,7 +368,7 @@
 			// 
 			// LblSchoolYearName
 			// 
-			this.LblSchoolYearName.AutoSize = true;
+			this.LblSchoolYearName.AutoSize = false;
 			this.LblSchoolYearName.Location = new System.Drawing.Point(255, 15);
 			this.LblSchoolYearName.Name = "LblSchoolYearName";
 			this.LblSchoolYearName.Size = new System.Drawing.Size(78, 15);
@@ -384,7 +384,7 @@
 			// 
 			// LblSchoolYearId
 			// 
-			this.LblSchoolYearId.AutoSize = true;
+			this.LblSchoolYearId.AutoSize = false;
 			this.LblSchoolYearId.Location = new System.Drawing.Point(12, 15);
 			this.LblSchoolYearId.Name = "LblSchoolYearId";
 			this.LblSchoolYearId.Size = new System.Drawing.Size(76, 15);
@@ -493,7 +493,7 @@
 			// 
 			// LblCredits
 			// 
-			this.LblCredits.AutoSize = true;
+			this.LblCredits.AutoSize = false;
 			this.LblCredits.Location = new System.Drawing.Point(585, 15);
 			this.LblCredits.Name = "LblCredits";
 			this.LblCredits.Size = new System.Drawing.Size(46, 15);
@@ -509,7 +509,7 @@
 			// 
 			// LblSubjectDesc
 			// 
-			this.LblSubjectDesc.AutoSize = true;
+			this.LblSubjectDesc.AutoSize = false;
 			this.LblSubjectDesc.Location = new System.Drawing.Point(12, 48);
 			this.LblSubjectDesc.Name = "LblSubjectDesc";
 			this.LblSubjectDesc.Size = new System.Drawing.Size(41, 15);
@@ -525,7 +525,7 @@
 			// 
 			// LblSubjectName
 			// 
-			this.LblSubjectName.AutoSize = true;
+			this.LblSubjectName.AutoSize = false;
 			this.LblSubjectName.Location = new System.Drawing.Point(245, 15);
 			this.LblSubjectName.Name = "LblSubjectName";
 			this.LblSubjectName.Size = new System.Drawing.Size(80, 15);
@@ -541,7 +541,7 @@
 			// 
 			// LblSubjectId
 			// 
-			this.LblSubjectId.AutoSize = true;
+			this.LblSubjectId.AutoSize = false;
 			this.LblSubjectId.Location = new System.Drawing.Point(12, 15);
 			this.LblSubjectId.Name = "LblSubjectId";
 			this.LblSubjectId.Size = new System.Drawing.Size(78, 15);

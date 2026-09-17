@@ -1,6 +1,6 @@
-﻿namespace QuanLySV
+namespace QuanLySV
 {
-    partial class Form1
+    partial class FrmMain
     {
         private System.ComponentModel.IContainer components = null;
 
@@ -44,7 +44,7 @@
 			this.BtnCreate.TabIndex = 1;
 			this.BtnCreate.Text = "Thêm mới";
 			this.BtnCreate.UseVisualStyleBackColor = true;
-			this.BtnCreate.Click += new System.EventHandler(this.BtnCreate_Cick);
+			this.BtnCreate.Click += new System.EventHandler(this.BtnCreate_Click);
 			// 
 			// BtnList
 			// 
@@ -75,14 +75,14 @@
 			this.PnlBody.Size = new System.Drawing.Size(578, 295);
 			this.PnlBody.TabIndex = 1;
 			// 
-			// Form1
+			// FrmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(578, 330);
 			this.Controls.Add(this.PnlBody);
 			this.Controls.Add(this.PnlHeader);
-			this.Name = "Form1";
+			this.Name = "FrmMain";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Quản lý sinh viên";
 			this.PnlHeader.ResumeLayout(false);

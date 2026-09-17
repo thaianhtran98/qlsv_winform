@@ -10,17 +10,17 @@ namespace QuanLySV.Controls
 {
 	public partial class UcFormEdit : UserControl
 	{
-		private string _studentId = null;
-		private bool _isEdit = false;
-		private bool _isSaved = false;
+		private string StudentId = null;
+		private bool IsEdit = false;
+		private bool IsSaved = false;
 
 		public UcFormEdit(string studentId, bool isEdit)
 		{
 			InitializeComponent();
 			ApplyAppColors();
-			_studentId = studentId;
-			_isEdit = isEdit;
-			_isSaved = isEdit;
+			StudentId = studentId;
+			IsEdit = isEdit;
+			IsSaved = isEdit;
 
 			// Tab 1: Bind student data to StudentDataSet.BindingSource
 			SetupStudentBinding(studentId, isEdit);
@@ -28,11 +28,11 @@ namespace QuanLySV.Controls
 			// Tab 2: Initialize student information for academic UC
 			if (isEdit && !string.IsNullOrEmpty(studentId))
 			{
-				ucStudentAcademic.LoadData(studentId);
+				UcStudentAcademic.LoadData(studentId);
 			}
 			else
 			{
-				ucStudentAcademic.ClearData();
+				UcStudentAcademic.ClearData();
 			}
 
 			TabMain.SelectedIndexChanged += TabMain_SelectedIndexChanged;
@@ -46,19 +46,19 @@ namespace QuanLySV.Controls
 
 		private void TabMain_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (TabMain.SelectedTab == TabPageAcademic)
+			if (TabMain.SelectedTab == TpgAcademic)
 			{
 				string sid = TbxStudentId.Text.Trim();
 				if (string.IsNullOrEmpty(sid))
 				{
 					MessageBox.Show("Vui lòng nhập mã số sinh viên trước khi xem hoặc thêm thông tin học tập.",
 					    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-					TabMain.SelectedTab = TabPageStudent;
+					TabMain.SelectedTab = TpgStudent;
 					TbxStudentId.Focus();
 					return;
 				}
 
-				ucStudentAcademic.LoadData(sid);
+				UcStudentAcademic.LoadData(sid);
 			}
 		}
 
@@ -118,7 +118,9 @@ namespace QuanLySV.Controls
 				b.Parse += (s, ev) =>
 				{
 					if (ev.Value == null || ev.Value == DBNull.Value)
+					{
 						ev.Value = string.Empty;
+					}
 				};
 			}
 			control.DataBindings.Add(b);
@@ -140,7 +142,7 @@ namespace QuanLySV.Controls
 
 		public void CancelEdit()
 		{
-			if (!_isSaved)
+			if (!IsSaved)
 			{
 				ClearStudentBindings();
 				StudentDataSet.Instance.CancelPendingRow();
@@ -187,7 +189,7 @@ namespace QuanLySV.Controls
 			}
 
 			ds.BindingSource.EndEdit();
-			_isSaved = true;
+			IsSaved = true;
 
 			MessageBox.Show("Đã lưu tạm vào DataSet. Nhấn 'Lưu' để lưu xuống DB.",
 			    "Lưu tạm", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -195,11 +197,14 @@ namespace QuanLySV.Controls
 
 		private bool SaveStudentDirect()
 		{
-			if (!ValidateStudentForm()) return false;
+			if (!ValidateStudentForm())
+			{
+				return false;
+			}
 
 			string sid = TbxStudentId.Text.Trim();
 
-			if (!_isEdit && StudentService.ExistsStudent(sid))
+			if (!IsEdit && StudentService.ExistsStudent(sid))
 			{
 				MessageBox.Show("Mã sinh viên '" + sid + "' đã tồn tại trong cơ sở dữ liệu. Vui lòng nhập mã sinh viên khác.",
 					"Trùng mã sinh viên", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -209,7 +214,10 @@ namespace QuanLySV.Controls
 
 			StudentDataSet ds = StudentDataSet.Instance;
 			DataRow row = ds.CurrentRow;
-			if (row == null) return false;
+			if (row == null)
+			{
+				return false;
+			}
 
 			row["STUDENTID"] = sid;
 			row["NAME"] = TbxName.Text.Trim();
@@ -221,13 +229,13 @@ namespace QuanLySV.Controls
 			ds.BindingSource.EndEdit();
 
 			string errorMessage;
-			bool saved = ds.Adapter.SaveStudent(row, !_isEdit, _isEdit ? _studentId : null, out errorMessage);
+			bool saved = ds.Adapter.SaveStudent(row, !IsEdit, IsEdit ? StudentId : null, out errorMessage);
 
 			if (saved)
 			{
-				_isSaved = true;
-				_isEdit = true;
-				_studentId = sid;
+				IsSaved = true;
+				IsEdit = true;
+				StudentId = sid;
 				TbxStudentId.ReadOnly = true;
 				return true;
 			}
@@ -240,13 +248,13 @@ namespace QuanLySV.Controls
 
 		private void SaveStudent(object sender, EventArgs e)
 		{
-			bool wasEdit = _isEdit;
+			bool wasEdit = IsEdit;
 			if (SaveStudentDirect())
 			{
 				string prefix = wasEdit ? "Cập nhật" : "Thêm";
 				MessageBox.Show(prefix + " sinh viên thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				string sid = TbxStudentId.Text.Trim();
-				ucStudentAcademic.LoadData(sid);
+				UcStudentAcademic.LoadData(sid);
 			}
 		}
 
@@ -271,11 +279,11 @@ namespace QuanLySV.Controls
 		{
 			if (!ValidateStudentForm())
 			{
-				TabMain.SelectedTab = TabPageStudent;
+				TabMain.SelectedTab = TpgStudent;
 				return;
 			}
 			// Tab 1 save
-			bool wasEdit = _isEdit;
+			bool wasEdit = IsEdit;
 			if (!SaveStudentDirect())
 			{
 				return;
@@ -285,12 +293,12 @@ namespace QuanLySV.Controls
 
 			// Tab 2 save
 			string academicError = null;
-			bool academicSaved = ucStudentAcademic.SaveAcademicsToDb(sid, out academicError);
+			bool academicSaved = UcStudentAcademic.SaveAcademicsToDb(sid, out academicError);
 			if (!academicSaved)
 			{
 				MessageBox.Show("Lưu hồ sơ sinh viên thành công, nhưng lưu kết quả học tập thất bại:\n" + (academicError ?? "Vui lòng kiểm tra lại."),
 					"Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				TabMain.SelectedTab = TabPageAcademic;
+				TabMain.SelectedTab = TpgAcademic;
 				return;
 			}
 
@@ -298,7 +306,7 @@ namespace QuanLySV.Controls
 			MessageBox.Show(prefix + " toàn bộ thông tin sinh viên và kết quả học tập thành công!",
 				"Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-			ucStudentAcademic.LoadData(sid);
+			UcStudentAcademic.LoadData(sid);
 		}
 	}
 }

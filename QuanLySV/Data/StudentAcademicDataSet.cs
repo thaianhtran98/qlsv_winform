@@ -9,16 +9,16 @@ namespace QuanLySV.Data
 	public sealed class StudentAcademicDataSet
 	{
 		// ── Singleton ─────────────────────────────────────────────────
-		private static readonly StudentAcademicDataSet _instance = new StudentAcademicDataSet();
-		public static StudentAcademicDataSet Instance { get { return _instance; } }
+		private static readonly StudentAcademicDataSet _Instance = new StudentAcademicDataSet();
+		public static StudentAcademicDataSet Instance { get { return _Instance; } }
 
 		// ── Core objects ──────────────────────────────────────────────
 		public DataTable StudentAcademicTable { get; private set; }
 		public BindingSource BindingSource { get; private set; }
 
 		// ── Internal adapter ──────────────────────────────────────────
-		private readonly StudentAcademicAdapter _adapter = new StudentAcademicAdapter();
-		public StudentAcademicAdapter Adapter { get { return _adapter; } }
+		private readonly StudentAcademicAdapter _Adapter = new StudentAcademicAdapter();
+		public StudentAcademicAdapter Adapter { get { return _Adapter; } }
 
 		// ── Constructor ───────────────────────────────────────────────
 		private StudentAcademicDataSet()
@@ -49,7 +49,7 @@ namespace QuanLySV.Data
 
 		public void FillStudentAcademic(string studentId = null)
 		{
-			_adapter.FillStudentAcademic(StudentAcademicTable, studentId);
+			_Adapter.FillStudentAcademic(StudentAcademicTable, studentId);
 		}
 
 		public void ClearStudentAcademic()

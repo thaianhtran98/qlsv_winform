@@ -27,7 +27,7 @@
   - **Số điện thoại** (định dạng kiểm soát qua `MaskedTextBox`).
 
 ### 3. Kiến trúc điều hướng động (Single-Form UserControl Navigation)
-- `Form1` đóng vai trò là Shell/Khung ứng dụng chính.
+- `FrmMain` đóng vai trò là Shell/Khung ứng dụng chính.
 - Việc chuyển đổi giữa màn hình *Danh sách* và *Thêm mới/Chỉnh sửa* được thực hiện bằng cách nạp/hủy các `UserControl` vào vùng chứa trung tâm (`PnlBody`) giúp ứng dụng mượt mà, không mở nhiều cửa sổ con rải rác.
 
 ---
@@ -37,7 +37,7 @@
 ```text
 QuanLySV/
 ├── App.config               # Cấu hình ứng dụng & Chuỗi kết nối Oracle Database
-├── Form1.cs                 # Form chính chứa thanh điều hướng và vùng hiển thị
+├── FrmMain.cs               # Form chính chứa thanh điều hướng và vùng hiển thị
 ├── Program.cs               # Điểm khởi chạy ứng dụng (Main Entry Point)
 ├── sql.txt                  # Kịch bản DDL khởi tạo bảng cơ sở dữ liệu
 ├── Controls/                # Các UserControl giao diện thành phần

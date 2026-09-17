@@ -15,9 +15,10 @@ namespace QuanLySV.Adapters
 		{
 			table.Rows.Clear();
 			ArrayList list = AcademicService.FillClass();
+			DataRow row = null;
 			foreach (ClassInfo item in list)
 			{
-				DataRow row = table.NewRow();
+				row = table.NewRow();
 				row["CLASSID"] = item.ClassId ?? "";
 				row["CLASSNAME"] = item.ClassName ?? "";
 				row["DESCRIPTION"] = item.Description ?? "";
@@ -34,9 +35,10 @@ namespace QuanLySV.Adapters
 		{
 			table.Rows.Clear();
 			ArrayList list = AcademicService.FillSchoolYear();
+			DataRow row = null;
 			foreach (SchoolYear item in list)
 			{
-				DataRow row = table.NewRow();
+				row = table.NewRow();
 				row["SCHOOLYEARID"] = item.SchoolYearId ?? "";
 				row["SCHOOLYEARNAME"] = item.SchoolYearName ?? "";
 				row["START_YEAR"] = item.StartYear;
@@ -54,9 +56,10 @@ namespace QuanLySV.Adapters
 		{
 			table.Rows.Clear();
 			ArrayList list = AcademicService.FillSubject();
+			DataRow row = null;
 			foreach (Subject item in list)
 			{
-				DataRow row = table.NewRow();
+				row = table.NewRow();
 				row["SUBJECTID"] = item.SubjectId ?? "";
 				row["SUBJECTNAME"] = item.SubjectName ?? "";
 				row["CREDIT"] = item.Credits;
@@ -72,7 +75,10 @@ namespace QuanLySV.Adapters
 		// =============================================
 		public bool SaveClass(ClassInfo item, bool isNew, string oldId = null)
 		{
-			if (isNew) return AcademicService.InsertClass(item);
+			if (isNew)
+			{
+				return AcademicService.InsertClass(item);
+			}
 			return AcademicService.UpdateClass(oldId ?? item.ClassId, item);
 		}
 
@@ -83,7 +89,10 @@ namespace QuanLySV.Adapters
 
 		public bool SaveSchoolYear(SchoolYear item, bool isNew, string oldId = null)
 		{
-			if (isNew) return AcademicService.InsertSchoolYear(item);
+			if (isNew)
+			{
+				return AcademicService.InsertSchoolYear(item);
+			}
 			return AcademicService.UpdateSchoolYear(oldId ?? item.SchoolYearId, item);
 		}
 
@@ -95,7 +104,9 @@ namespace QuanLySV.Adapters
 		public bool SaveSubject(Subject item, bool isNew, string oldId = null)
 		{
 			if (isNew)
+			{
 				return AcademicService.InsertSubject(item);
+			}
 			return AcademicService.UpdateSubject(oldId ?? item.SubjectId, item);
 		}
 

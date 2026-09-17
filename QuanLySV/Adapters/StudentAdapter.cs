@@ -16,9 +16,10 @@ namespace QuanLySV.Adapters
 			table.Rows.Clear();
 
 			ArrayList students = StudentService.FillStudent(status, sex);
+			DataRow row = null;
 			foreach (Student s in students)
 			{
-				DataRow row = table.NewRow();
+				row = table.NewRow();
 				MapStudentToRow(s, row);
 				table.Rows.Add(row);
 			}
@@ -34,7 +35,20 @@ namespace QuanLySV.Adapters
 		public SaveResult SaveChanges(DataTable changes)
 		{
 			SaveResult result = new SaveResult();
-			if (changes == null || changes.Rows.Count == 0) return result;
+			if (changes == null || changes.Rows.Count == 0)
+			{
+				return result;
+			}
+
+			Student newSv = null;
+			Student updSv = null;
+			string oldId = null;
+			string delId = null;
+			string addErr = null;
+			string updErr = null;
+			bool added = false;
+			bool updated = false;
+			bool deleted = false;
 
 			foreach (DataRow row in changes.Rows)
 			{
@@ -43,28 +57,47 @@ namespace QuanLySV.Adapters
 					switch (row.RowState)
 					{
 						case DataRowState.Added:
-							Student newSv = MapRowToStudent(row);
-							string addErr;
-							bool added = StudentService.InsertStudent(newSv, out addErr);
-							if (added) result.Success++;
-							else { result.Failed++; result.Errors.Add("Thêm mới " + row["STUDENTID"] + " thất bại: " + addErr); }
+							newSv = MapRowToStudent(row);
+							added = StudentService.InsertStudent(newSv, out addErr);
+							if (added)
+							{
+								result.Success++;
+							}
+							else
+							{
+								result.Failed++;
+								result.Errors.Add("Thêm mới " + row["STUDENTID"] + " thất bại: " + addErr);
+							}
 							break;
 
 						case DataRowState.Modified:
 							// Get original STUDENTID (before change) for correct WHERE clause
-							string oldId = row["STUDENTID", DataRowVersion.Original].ToString();
-							Student updSv = MapRowToStudent(row);
-							string updErr;
-							bool updated = StudentService.UpdateStudent(oldId, updSv, out updErr);
-							if (updated) result.Success++;
-							else { result.Failed++; result.Errors.Add("Cập nhật " + row["STUDENTID"] + " thất bại: " + updErr); }
+							oldId = row["STUDENTID", DataRowVersion.Original].ToString();
+							updSv = MapRowToStudent(row);
+							updated = StudentService.UpdateStudent(oldId, updSv, out updErr);
+							if (updated)
+							{
+								result.Success++;
+							}
+							else
+							{
+								result.Failed++;
+								result.Errors.Add("Cập nhật " + row["STUDENTID"] + " thất bại: " + updErr);
+							}
 							break;
 
 						case DataRowState.Deleted:
-							string delId = row["STUDENTID", DataRowVersion.Original].ToString();
-							bool deleted = StudentService.DeleteStudent(delId);
-							if (deleted) result.Success++;
-							else { result.Failed++; result.Errors.Add("Xóa " + delId + " thất bại"); }
+							delId = row["STUDENTID", DataRowVersion.Original].ToString();
+							deleted = StudentService.DeleteStudent(delId);
+							if (deleted)
+							{
+								result.Success++;
+							}
+							else
+							{
+								result.Failed++;
+								result.Errors.Add("Xóa " + delId + " thất bại");
+							}
 							break;
 					}
 				}
@@ -142,7 +175,10 @@ namespace QuanLySV.Adapters
 			if (!string.IsNullOrEmpty(phone))
 			{
 				string digitsOnly = phone.Replace("-", "").Trim();
-				if (digitsOnly.Length == 0) phone = null;
+				if (digitsOnly.Length == 0)
+				{
+					phone = null;
+				}
 			}
 
 			return new Student

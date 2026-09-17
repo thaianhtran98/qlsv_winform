@@ -20,12 +20,12 @@ namespace QuanLySV.Controls
 	{
 		private const int COL_EDIT = 12;
 		private const int COL_DELETE = 13;
-		private GridViewHelper _GridViewHelper;
+		private GridViewHelper GridViewHelper;
 
 		public UcList()
 		{
 			InitializeComponent();
-			_GridViewHelper = new GridViewHelper();
+			GridViewHelper = new GridViewHelper();
 			ConfigGridView();
 			DgvListSV.CellContentClick += EditStudent;
 			DgvListSV.CellContentClick += DeleteStudent;
@@ -42,10 +42,12 @@ namespace QuanLySV.Controls
 			DataTable studentTable = ds.StudentTable;
 			if (studentTable == null || studentTable.Rows.Count == 0) return;
 
+			Student student = null;
+			int rowIndex = 0;
 			foreach (DataRow row in studentTable.Rows)
 			{
-				Student student = StudentAdapter.MapRowToStudent(row);
-				int rowIndex = DgvListSV.Rows.Add(
+				student = StudentAdapter.MapRowToStudent(row);
+				rowIndex = DgvListSV.Rows.Add(
 					student.StudentId,
 					student.Name,
 					student.Sex == Student.MALE ? "Nam" : "Nữ",
@@ -80,7 +82,7 @@ namespace QuanLySV.Controls
 				Student student = DgvListSV.Rows[e.RowIndex].Tag as Student;
 				if (student != null && student.Status == Student.ACTIVE)
 				{
-					Form1 mainForm = this.FindForm() as Form1;
+					FrmMain mainForm = this.FindForm() as FrmMain;
 					if (mainForm != null)
 					{
 						mainForm.ShowUc(new UcFormEdit(student.StudentId, true));
@@ -164,21 +166,21 @@ namespace QuanLySV.Controls
 			DgvListSV.DefaultCellStyle.SelectionForeColor = AppColor.TextDark;
 			DgvListSV.ColumnHeadersDefaultCellStyle.BackColor = AppColor.GridHeader;
 			DgvListSV.ColumnHeadersDefaultCellStyle.ForeColor = AppColor.TextDark;
-			_GridViewHelper.SetFixedColumn(DgvListSV.Columns["MSSV"], 65);
-			_GridViewHelper.SetFixedColumn(DgvListSV.Columns["GgvSex"], 70);
-			_GridViewHelper.SetFixedColumn(DgvListSV.Columns["GgvBirthOfDate"], 90);
-			_GridViewHelper.SetFixedColumn(DgvListSV.Columns["GgvVneId"], 100);
-			_GridViewHelper.SetFixedColumn(DgvListSV.Columns["GgvDateOfIssue"], 90);
-			_GridViewHelper.SetFixedColumn(DgvListSV.Columns["GgvNumberPhone"], 100);
-			_GridViewHelper.SetFixedColumn(DgvListSV.Columns["GgvStatus"], 115);
-			_GridViewHelper.SetFixedColumn(DgvListSV.Columns["GgvActionEdit"], 60);
-			_GridViewHelper.SetFixedColumn(DgvListSV.Columns["GgvActionDelete"], 60);
+			GridViewHelper.SetFixedColumn(DgvListSV.Columns["MSSV"], 65);
+			GridViewHelper.SetFixedColumn(DgvListSV.Columns["GgvSex"], 70);
+			GridViewHelper.SetFixedColumn(DgvListSV.Columns["GgvBirthOfDate"], 90);
+			GridViewHelper.SetFixedColumn(DgvListSV.Columns["GgvVneId"], 100);
+			GridViewHelper.SetFixedColumn(DgvListSV.Columns["GgvDateOfIssue"], 90);
+			GridViewHelper.SetFixedColumn(DgvListSV.Columns["GgvNumberPhone"], 100);
+			GridViewHelper.SetFixedColumn(DgvListSV.Columns["GgvStatus"], 115);
+			GridViewHelper.SetFixedColumn(DgvListSV.Columns["GgvActionEdit"], 60);
+			GridViewHelper.SetFixedColumn(DgvListSV.Columns["GgvActionDelete"], 60);
 
-			_GridViewHelper.SetFillColumn(DgvListSV.Columns["GgvName"], 130, 120);
-			_GridViewHelper.SetFillColumn(DgvListSV.Columns["GgvBirthLocal"], 100, 100);
-			_GridViewHelper.SetFillColumn(DgvListSV.Columns["GgvLocalOfIssue"], 100, 100);
-			_GridViewHelper.SetFillColumn(DgvListSV.Columns["GgvLocal"], 100, 100);
-			_GridViewHelper.SetFillColumn(DgvListSV.Columns["GgvPlaceOfResidence"], 180, 180);
+			GridViewHelper.SetFillColumn(DgvListSV.Columns["GgvName"], 130, 120);
+			GridViewHelper.SetFillColumn(DgvListSV.Columns["GgvBirthLocal"], 100, 100);
+			GridViewHelper.SetFillColumn(DgvListSV.Columns["GgvLocalOfIssue"], 100, 100);
+			GridViewHelper.SetFillColumn(DgvListSV.Columns["GgvLocal"], 100, 100);
+			GridViewHelper.SetFillColumn(DgvListSV.Columns["GgvPlaceOfResidence"], 180, 180);
 		}
 	}
 }

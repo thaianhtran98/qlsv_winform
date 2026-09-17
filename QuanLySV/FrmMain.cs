@@ -13,15 +13,15 @@ using QuanLySV.Helpers;
 
 namespace QuanLySV
 {
-	public partial class Form1 : Form
+	public partial class FrmMain : Form
 	{
 		private UserControl UserControlCurrent = null;
 
-		public Form1()
+		public FrmMain()
 		{
 			InitializeComponent();
 			ApplyAppColors();
-			this.Load += Form1_Load;
+			this.Load += FrmMain_Load;
 			UserControlCurrent = new UcList();
 			ShowUc(UserControlCurrent);
 		}
@@ -33,7 +33,7 @@ namespace QuanLySV
 			BtnManageReference.ForeColor = AppColor.BtnBlack;
 		}
 
-		private void Form1_Load(object sender, EventArgs e)
+		private void FrmMain_Load(object sender, EventArgs e)
 		{
 			ReferenceDataSet.Instance.FillAll();
 		}
@@ -68,7 +68,7 @@ namespace QuanLySV
 			ShowUc(new UcList());
 		}
 
-		private void BtnCreate_Cick(object sender, EventArgs e)
+		private void BtnCreate_Click(object sender, EventArgs e)
 		{
 			ShowUc(new UcFormEdit(String.Empty, false));
 		}
@@ -82,3 +82,4 @@ namespace QuanLySV
 		}
 	}
 }
+

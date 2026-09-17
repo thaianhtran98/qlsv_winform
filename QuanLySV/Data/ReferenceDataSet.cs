@@ -7,8 +7,8 @@ namespace QuanLySV.Data
 {
 	public sealed class ReferenceDataSet
 	{
-		private static readonly ReferenceDataSet _instance = new ReferenceDataSet();
-		public static ReferenceDataSet Instance { get { return _instance; } }
+		private static readonly ReferenceDataSet _Instance = new ReferenceDataSet();
+		public static ReferenceDataSet Instance { get { return _Instance; } }
 
 		// DataTables
 		public DataTable ClassTable { get; private set; }
@@ -20,7 +20,7 @@ namespace QuanLySV.Data
 		public BindingSource SchoolYearBindingSource { get; private set; }
 		public BindingSource SubjectBindingSource { get; private set; }
 
-		private readonly ReferenceAdapter _adapter = new ReferenceAdapter();
+		private readonly ReferenceAdapter _Adapter = new ReferenceAdapter();
 
 		private ReferenceDataSet()
 		{
@@ -68,28 +68,28 @@ namespace QuanLySV.Data
 			return table;
 		}
 
-		public ReferenceAdapter Adapter { get { return _adapter; } }
+		public ReferenceAdapter Adapter { get { return _Adapter; } }
 
 		public void FillAll()
 		{
-			_adapter.FillClass(ClassTable);
-			_adapter.FillSchoolYear(SchoolYearTable);
-			_adapter.FillSubject(SubjectTable);
+			_Adapter.FillClass(ClassTable);
+			_Adapter.FillSchoolYear(SchoolYearTable);
+			_Adapter.FillSubject(SubjectTable);
 		}
 
 		public void ReloadClass()
 		{
-			_adapter.FillClass(ClassTable);
+			_Adapter.FillClass(ClassTable);
 		}
 
 		public void ReloadSchoolYear()
 		{
-			_adapter.FillSchoolYear(SchoolYearTable);
+			_Adapter.FillSchoolYear(SchoolYearTable);
 		}
 
 		public void ReloadSubject()
 		{
-			_adapter.FillSubject(SubjectTable);
+			_Adapter.FillSubject(SubjectTable);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿namespace QuanLySV.Controls
+namespace QuanLySV.Controls
 {
 	partial class UcList
 	{
@@ -22,7 +22,7 @@
 			this.LblSex = new System.Windows.Forms.Label();
 			this.CbxStatus = new System.Windows.Forms.ComboBox();
 			this.CbxSex = new System.Windows.Forms.ComboBox();
-			this.pnlBody = new System.Windows.Forms.Panel();
+			this.PnlBody = new System.Windows.Forms.Panel();
 			this.DgvListSV = new System.Windows.Forms.DataGridView();
 			this.MSSV = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.GgvName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -39,7 +39,7 @@
 			this.GgvActionEdit = new System.Windows.Forms.DataGridViewButtonColumn();
 			this.GgvActionDelete = new System.Windows.Forms.DataGridViewButtonColumn();
 			this.PnlHeader.SuspendLayout();
-			this.pnlBody.SuspendLayout();
+			this.PnlBody.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.DgvListSV)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -57,7 +57,7 @@
 			// 
 			// LblStatus
 			// 
-			this.LblStatus.AutoSize = true;
+			this.LblStatus.AutoSize = false;
 			this.LblStatus.Location = new System.Drawing.Point(245, 10);
 			this.LblStatus.Name = "LblStatus";
 			this.LblStatus.Size = new System.Drawing.Size(107, 13);
@@ -66,7 +66,7 @@
 			// 
 			// LblSex
 			// 
-			this.LblSex.AutoSize = true;
+			this.LblSex.AutoSize = false;
 			this.LblSex.Location = new System.Drawing.Point(10, 10);
 			this.LblSex.Name = "LblSex";
 			this.LblSex.Size = new System.Drawing.Size(47, 13);
@@ -91,14 +91,14 @@
 			this.CbxSex.TabIndex = 0;
 			this.CbxSex.SelectedIndexChanged += new System.EventHandler(this.CbxSex_SelectedIndexChanged);
 			// 
-			// pnlBody
+			// PnlBody
 			// 
-			this.pnlBody.Controls.Add(this.DgvListSV);
-			this.pnlBody.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlBody.Location = new System.Drawing.Point(0, 30);
-			this.pnlBody.Name = "pnlBody";
-			this.pnlBody.Size = new System.Drawing.Size(1254, 344);
-			this.pnlBody.TabIndex = 1;
+			this.PnlBody.Controls.Add(this.DgvListSV);
+			this.PnlBody.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.PnlBody.Location = new System.Drawing.Point(0, 30);
+			this.PnlBody.Name = "PnlBody";
+			this.PnlBody.Size = new System.Drawing.Size(1254, 344);
+			this.PnlBody.TabIndex = 1;
 			// 
 			// DgvListSV
 			// 
@@ -209,13 +209,13 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.pnlBody);
+			this.Controls.Add(this.PnlBody);
 			this.Controls.Add(this.PnlHeader);
 			this.Name = "UcList";
 			this.Size = new System.Drawing.Size(1254, 374);
 			this.PnlHeader.ResumeLayout(false);
 			this.PnlHeader.PerformLayout();
-			this.pnlBody.ResumeLayout(false);
+			this.PnlBody.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.DgvListSV)).EndInit();
 			this.ResumeLayout(false);
 
@@ -224,7 +224,7 @@
 		#endregion
 
 		private System.Windows.Forms.Panel PnlHeader;
-		private System.Windows.Forms.Panel pnlBody;
+		private System.Windows.Forms.Panel PnlBody;
 		private System.Windows.Forms.ComboBox CbxStatus;
 		private System.Windows.Forms.ComboBox CbxSex;
 		private System.Windows.Forms.Label LblStatus;

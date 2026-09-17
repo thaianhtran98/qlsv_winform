@@ -31,9 +31,9 @@ namespace QuanLySV.Forms
 		private const int COL_SUB_CREDITS = 2;
 		private const int COL_SUB_DESC = 3;
 
-		private string _OriginalClassId = string.Empty;
-		private string _OriginalSchoolYearId = string.Empty;
-		private string _OriginalSubjectId = string.Empty;
+		private string OriginalClassId = string.Empty;
+		private string OriginalSchoolYearId = string.Empty;
+		private string OriginalSubjectId = string.Empty;
 
 		public string SelectedId { get; set; }
 
@@ -144,9 +144,11 @@ namespace QuanLySV.Forms
 		{
 			DgvClass.Rows.Clear();
 			DataTable dt = ReferenceDataSet.Instance.ClassTable;
+
+			int rindex = 0;
 			foreach (DataRow row in dt.Rows)
 			{
-				int rindex = DgvClass.Rows.Add(
+				rindex = DgvClass.Rows.Add(
 					row["CLASSID"]?.ToString(),
 					row["CLASSNAME"]?.ToString(),
 					row["DESCRIPTION"]?.ToString()
@@ -160,11 +162,11 @@ namespace QuanLySV.Forms
 		{
 			if (DgvClass.SelectedRows.Count == 0) return;
 			DataGridViewRow srow = DgvClass.SelectedRows[0];
-			_OriginalClassId = srow.Cells[COL_CLASS_ID].Value?.ToString() ?? string.Empty;
-			TbxClassId.Text = _OriginalClassId;
+			OriginalClassId = srow.Cells[COL_CLASS_ID].Value?.ToString() ?? string.Empty;
+			TbxClassId.Text = OriginalClassId;
 			TbxClassName.Text = srow.Cells[COL_CLASS_NAME].Value?.ToString() ?? string.Empty;
 			TbxClassDesc.Text = srow.Cells[COL_CLASS_DESC].Value?.ToString() ?? string.Empty;
-			SelectedId = _OriginalClassId;
+			SelectedId = OriginalClassId;
 			
 			BtnAddClass.Enabled = false;
 		}
@@ -212,7 +214,7 @@ namespace QuanLySV.Forms
 
 		private void BtnEditClass_Click(object sender, EventArgs e)
 		{
-			if (string.IsNullOrEmpty(_OriginalClassId))
+			if (string.IsNullOrEmpty(OriginalClassId))
 			{
 				MessageBox.Show("Vui lòng chọn lớp học từ danh sách để cập nhật.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
@@ -230,18 +232,18 @@ namespace QuanLySV.Forms
 
 			ClassInfo cls = new ClassInfo
 			{
-				ClassId = _OriginalClassId,
+				ClassId = OriginalClassId,
 				ClassName = classname,
 				Description = classdesc,
 				Status = ClassInfo.ACTIVE
 			};
 
-			bool ok = ReferenceDataSet.Instance.Adapter.SaveClass(cls, false, _OriginalClassId);
+			bool ok = ReferenceDataSet.Instance.Adapter.SaveClass(cls, false, OriginalClassId);
 			if (ok)
 			{
 				ReferenceDataSet.Instance.ReloadClass();
 				FillClassList();
-				SelectedId = _OriginalClassId;
+				SelectedId = OriginalClassId;
 				MessageBox.Show("Cập nhật lớp học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 			else
@@ -252,18 +254,18 @@ namespace QuanLySV.Forms
 
 		private void BtnDeleteClass_Click(object sender, EventArgs e)
 		{
-			if (string.IsNullOrEmpty(_OriginalClassId))
+			if (string.IsNullOrEmpty(OriginalClassId))
 			{
 				MessageBox.Show("Vui lòng chọn lớp học cần xóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
 
-			if (MessageBox.Show("Bạn có chắc chắn muốn xóa lớp " + _OriginalClassId + "?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+			if (MessageBox.Show("Bạn có chắc chắn muốn xóa lớp " + OriginalClassId + "?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
 			{
 				return;
 			}
 
-			bool ok = ReferenceDataSet.Instance.Adapter.DeleteClass(_OriginalClassId);
+			bool ok = ReferenceDataSet.Instance.Adapter.DeleteClass(OriginalClassId);
 			if (ok)
 			{
 				ReferenceDataSet.Instance.ReloadClass();
@@ -283,7 +285,7 @@ namespace QuanLySV.Forms
 
 		private void ClearClassInputs()
 		{
-			_OriginalClassId = string.Empty;
+			OriginalClassId = string.Empty;
 			TbxClassId.Text = string.Empty;
 			TbxClassName.Text = string.Empty;
 			TbxClassDesc.Text = string.Empty;
@@ -299,9 +301,10 @@ namespace QuanLySV.Forms
 		{
 			DgvSchoolYear.Rows.Clear();
 			DataTable dt = ReferenceDataSet.Instance.SchoolYearTable;
+			int rindex = 0;
 			foreach (DataRow row in dt.Rows)
 			{
-				int rindex = DgvSchoolYear.Rows.Add(
+				rindex = DgvSchoolYear.Rows.Add(
 					row["SCHOOLYEARID"]?.ToString(),
 					row["SCHOOLYEARNAME"]?.ToString(),
 					row["START_YEAR"]?.ToString(),
@@ -316,8 +319,8 @@ namespace QuanLySV.Forms
 		{
 			if (DgvSchoolYear.SelectedRows.Count == 0) return;
 			DataGridViewRow srow = DgvSchoolYear.SelectedRows[0];
-			_OriginalSchoolYearId = srow.Cells[COL_SYEAR_ID].Value?.ToString() ?? string.Empty;
-			TbxSchoolYearId.Text = _OriginalSchoolYearId;
+			OriginalSchoolYearId = srow.Cells[COL_SYEAR_ID].Value?.ToString() ?? string.Empty;
+			TbxSchoolYearId.Text = OriginalSchoolYearId;
 			TbxSchoolYearName.Text = srow.Cells[COL_SYEAR_NAME].Value?.ToString() ?? string.Empty;
 
 			if (int.TryParse(srow.Cells[COL_SYEAR_START].Value?.ToString(), out int syear))
@@ -329,7 +332,7 @@ namespace QuanLySV.Forms
 				NumEndYear.Value = Math.Max(NumEndYear.Minimum, Math.Min(NumEndYear.Maximum, eyear));
 			}
 
-			SelectedId = _OriginalSchoolYearId;
+			SelectedId = OriginalSchoolYearId;
 			BtnAddSchoolYear.Enabled = false;
 		}
 
@@ -340,7 +343,7 @@ namespace QuanLySV.Forms
 			{
 				NumEndYear.Value = syear + 1;
 			}
-			if (string.IsNullOrEmpty(_OriginalSchoolYearId))
+			if (string.IsNullOrEmpty(OriginalSchoolYearId))
 			{
 				TbxSchoolYearId.Text = syear + "-" + (syear + 1);
 				TbxSchoolYearName.Text = "Năm học " + syear + "-" + (syear + 1);
@@ -397,7 +400,7 @@ namespace QuanLySV.Forms
 
 		private void BtnEditSchoolYear_Click(object sender, EventArgs e)
 		{
-			if (string.IsNullOrEmpty(_OriginalSchoolYearId))
+			if (string.IsNullOrEmpty(OriginalSchoolYearId))
 			{
 				MessageBox.Show("Vui lòng chọn năm học từ danh sách để cập nhật.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
@@ -416,19 +419,19 @@ namespace QuanLySV.Forms
 
 			SchoolYear sy = new SchoolYear
 			{
-				SchoolYearId = _OriginalSchoolYearId,
+				SchoolYearId = OriginalSchoolYearId,
 				SchoolYearName = syearname,
 				StartYear = syear,
 				EndYear = eyear,
 				Status = SchoolYear.ACTIVE
 			};
 
-			bool ok = ReferenceDataSet.Instance.Adapter.SaveSchoolYear(sy, false, _OriginalSchoolYearId);
+			bool ok = ReferenceDataSet.Instance.Adapter.SaveSchoolYear(sy, false, OriginalSchoolYearId);
 			if (ok)
 			{
 				ReferenceDataSet.Instance.ReloadSchoolYear();
 				FillSchoolYearList();
-				SelectedId = _OriginalSchoolYearId;
+				SelectedId = OriginalSchoolYearId;
 				MessageBox.Show("Cập nhật năm học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 			else
@@ -439,18 +442,18 @@ namespace QuanLySV.Forms
 
 		private void BtnDeleteSchoolYear_Click(object sender, EventArgs e)
 		{
-			if (string.IsNullOrEmpty(_OriginalSchoolYearId))
+			if (string.IsNullOrEmpty(OriginalSchoolYearId))
 			{
 				MessageBox.Show("Vui lòng chọn năm học cần xóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
 
-			if (MessageBox.Show("Bạn có chắc chắn muốn xóa năm học " + _OriginalSchoolYearId + "?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+			if (MessageBox.Show("Bạn có chắc chắn muốn xóa năm học " + OriginalSchoolYearId + "?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
 			{
 				return;
 			}
 
-			bool ok = ReferenceDataSet.Instance.Adapter.DeleteSchoolYear(_OriginalSchoolYearId);
+			bool ok = ReferenceDataSet.Instance.Adapter.DeleteSchoolYear(OriginalSchoolYearId);
 			if (ok)
 			{
 				ReferenceDataSet.Instance.ReloadSchoolYear();
@@ -470,7 +473,7 @@ namespace QuanLySV.Forms
 
 		private void ClearSchoolYearInputs()
 		{
-			_OriginalSchoolYearId = string.Empty;
+			OriginalSchoolYearId = string.Empty;
 			TbxSchoolYearId.Text = string.Empty;
 			TbxSchoolYearName.Text = string.Empty;
 			NumStartYear.Value = DateTime.Now.Year;
@@ -487,9 +490,10 @@ namespace QuanLySV.Forms
 		{
 			DgvSubject.Rows.Clear();
 			DataTable dt = ReferenceDataSet.Instance.SubjectTable;
+			int rindex = 0;
 			foreach (DataRow row in dt.Rows)
 			{
-				int rindex = DgvSubject.Rows.Add(
+				rindex = DgvSubject.Rows.Add(
 					row["SUBJECTID"]?.ToString(),
 					row["SUBJECTNAME"]?.ToString(),
 					row["CREDIT"]?.ToString(),
@@ -504,15 +508,18 @@ namespace QuanLySV.Forms
 		{
 			if (DgvSubject.SelectedRows.Count == 0) return;
 			DataGridViewRow srow = DgvSubject.SelectedRows[0];
-			_OriginalSubjectId = srow.Cells[COL_SUB_ID].Value?.ToString() ?? string.Empty;
-			TbxSubjectId.Text = _OriginalSubjectId;
+			OriginalSubjectId = srow.Cells[COL_SUB_ID].Value?.ToString() ?? string.Empty;
+			TbxSubjectId.Text = OriginalSubjectId;
 			TbxSubjectName.Text = srow.Cells[COL_SUB_NAME].Value?.ToString() ?? string.Empty;
-
-			if (int.TryParse(srow.Cells[COL_SUB_CREDITS].Value?.ToString(), out int creds))
+			
+			int creds = 0;
+			if (int.TryParse(srow.Cells[COL_SUB_CREDITS].Value?.ToString(), out creds))
+			{
 				NumCredits.Value = Math.Max(NumCredits.Minimum, Math.Min(NumCredits.Maximum, creds));
+			}
 
 			TbxSubjectDesc.Text = srow.Cells[COL_SUB_DESC].Value?.ToString() ?? string.Empty;
-			SelectedId = _OriginalSubjectId;
+			SelectedId = OriginalSubjectId;
 			
 			BtnAddSubject.Enabled = false;
 		}
@@ -562,7 +569,7 @@ namespace QuanLySV.Forms
 
 		private void BtnEditSubject_Click(object sender, EventArgs e)
 		{
-			if (string.IsNullOrEmpty(_OriginalSubjectId))
+			if (string.IsNullOrEmpty(OriginalSubjectId))
 			{
 				MessageBox.Show("Vui lòng chọn môn học từ danh sách để cập nhật.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
@@ -581,19 +588,19 @@ namespace QuanLySV.Forms
 
 			Subject sub = new Subject
 			{
-				SubjectId = _OriginalSubjectId,
+				SubjectId = OriginalSubjectId,
 				SubjectName = subname,
 				Credits = creds,
 				Description = subdesc,
 				Status = Subject.ACTIVE
 			};
 
-			bool ok = ReferenceDataSet.Instance.Adapter.SaveSubject(sub, false, _OriginalSubjectId);
+			bool ok = ReferenceDataSet.Instance.Adapter.SaveSubject(sub, false, OriginalSubjectId);
 			if (ok)
 			{
 				ReferenceDataSet.Instance.ReloadSubject();
 				FillSubjectList();
-				SelectedId = _OriginalSubjectId;
+				SelectedId = OriginalSubjectId;
 				MessageBox.Show("Cập nhật môn học thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 			else
@@ -604,18 +611,18 @@ namespace QuanLySV.Forms
 
 		private void BtnDeleteSubject_Click(object sender, EventArgs e)
 		{
-			if (string.IsNullOrEmpty(_OriginalSubjectId))
+			if (string.IsNullOrEmpty(OriginalSubjectId))
 			{
 				MessageBox.Show("Vui lòng chọn môn học cần xóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
 
-			if (MessageBox.Show("Bạn có chắc chắn muốn xóa môn học " + _OriginalSubjectId + "?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+			if (MessageBox.Show("Bạn có chắc chắn muốn xóa môn học " + OriginalSubjectId + "?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
 			{
 				return;
 			}
 
-			bool ok = ReferenceDataSet.Instance.Adapter.DeleteSubject(_OriginalSubjectId);
+			bool ok = ReferenceDataSet.Instance.Adapter.DeleteSubject(OriginalSubjectId);
 			if (ok)
 			{
 				ReferenceDataSet.Instance.ReloadSubject();
@@ -635,7 +642,7 @@ namespace QuanLySV.Forms
 
 		private void ClearSubjectInputs()
 		{
-			_OriginalSubjectId = string.Empty;
+			OriginalSubjectId = string.Empty;
 			TbxSubjectId.Text = string.Empty;
 			TbxSubjectName.Text = string.Empty;
 			NumCredits.Value = 3;
@@ -656,15 +663,15 @@ namespace QuanLySV.Forms
 		{
 			if (TabReference.SelectedTab == TpgClass)
 			{
-				SelectedId = _OriginalClassId;
+				SelectedId = OriginalClassId;
 			}
 			else if (TabReference.SelectedTab == TpgSchoolYear)
 			{
-				SelectedId = _OriginalSchoolYearId;
+				SelectedId = OriginalSchoolYearId;
 			}
 			else if (TabReference.SelectedTab == TpgSubject)
 			{
-				SelectedId = _OriginalSubjectId;
+				SelectedId = OriginalSubjectId;
 			}
 		}
 

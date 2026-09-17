@@ -117,7 +117,7 @@ namespace QuanLySV.Controls
 			// 
 			// LblPendingAcademic
 			// 
-			this.LblPendingAcademic.AutoSize = true;
+			this.LblPendingAcademic.AutoSize = false;
 			this.LblPendingAcademic.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.LblPendingAcademic.ForeColor = System.Drawing.Color.DarkOrange;
 			this.LblPendingAcademic.Location = new System.Drawing.Point(365, 10);
@@ -133,12 +133,12 @@ namespace QuanLySV.Controls
 			this.DgvAcademic.BackgroundColor = System.Drawing.Color.White;
 			this.DgvAcademic.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.DgvAcademic.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.GdvClass,
-            this.GdvSchoolYear,
-            this.GdvSubject,
-            this.GdvSemester,
-            this.GdvScore,
-            this.GdvScoreLetter});
+				this.GdvClass,
+				this.GdvSchoolYear,
+				this.GdvSubject,
+				this.GdvSemester,
+				this.GdvScore,
+				this.GdvScoreLetter});
 			this.DgvAcademic.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.DgvAcademic.Location = new System.Drawing.Point(0, 35);
 			this.DgvAcademic.MultiSelect = false;
@@ -223,6 +223,7 @@ namespace QuanLySV.Controls
 			// 
 			// LblClass
 			// 
+			this.LblClass.AutoSize = false;
 			this.LblClass.Location = new System.Drawing.Point(3, 37);
 			this.LblClass.Name = "LblClass";
 			this.LblClass.Size = new System.Drawing.Size(100, 15);
@@ -250,6 +251,7 @@ namespace QuanLySV.Controls
 			// 
 			// LblSchoolYear
 			// 
+			this.LblSchoolYear.AutoSize = false;
 			this.LblSchoolYear.Location = new System.Drawing.Point(369, 37);
 			this.LblSchoolYear.Name = "LblSchoolYear";
 			this.LblSchoolYear.Size = new System.Drawing.Size(100, 15);
@@ -277,6 +279,7 @@ namespace QuanLySV.Controls
 			// 
 			// LblSubject
 			// 
+			this.LblSubject.AutoSize = false;
 			this.LblSubject.Location = new System.Drawing.Point(3, 77);
 			this.LblSubject.Name = "LblSubject";
 			this.LblSubject.Size = new System.Drawing.Size(100, 15);
@@ -304,6 +307,7 @@ namespace QuanLySV.Controls
 			// 
 			// LblSemester
 			// 
+			this.LblSemester.AutoSize = false;
 			this.LblSemester.Location = new System.Drawing.Point(369, 77);
 			this.LblSemester.Name = "LblSemester";
 			this.LblSemester.Size = new System.Drawing.Size(100, 15);
@@ -324,6 +328,7 @@ namespace QuanLySV.Controls
 			// 
 			// LblScore
 			// 
+			this.LblScore.AutoSize = false;
 			this.LblScore.Location = new System.Drawing.Point(3, 117);
 			this.LblScore.Name = "LblScore";
 			this.LblScore.Size = new System.Drawing.Size(80, 15);
@@ -339,6 +344,7 @@ namespace QuanLySV.Controls
 			// 
 			// LblScoreLetter
 			// 
+			this.LblScoreLetter.AutoSize = false;
 			this.LblScoreLetter.Location = new System.Drawing.Point(103, 117);
 			this.LblScoreLetter.Name = "LblScoreLetter";
 			this.LblScoreLetter.Size = new System.Drawing.Size(80, 15);
@@ -354,6 +360,7 @@ namespace QuanLySV.Controls
 			// 
 			// LblAcademicNote
 			// 
+			this.LblAcademicNote.AutoSize = false;
 			this.LblAcademicNote.Location = new System.Drawing.Point(3, 157);
 			this.LblAcademicNote.Name = "LblAcademicNote";
 			this.LblAcademicNote.Size = new System.Drawing.Size(60, 15);
@@ -391,7 +398,7 @@ namespace QuanLySV.Controls
 			// 
 			// LblFormName
 			// 
-			this.LblFormName.AutoSize = true;
+			this.LblFormName.AutoSize = false;
 			this.LblFormName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
 			this.LblFormName.Location = new System.Drawing.Point(3, 4);
 			this.LblFormName.Name = "LblFormName";
@@ -445,12 +452,12 @@ namespace QuanLySV.Controls
 		public System.Windows.Forms.TextBox TbxAcademicNote;
 		public System.Windows.Forms.Button BtnSaveTempAcademic;
 		public System.Windows.Forms.Button BtnCancelAcademic;
-		public System.Windows.Forms.DataGridViewTextBoxColumn colClass;
-		public System.Windows.Forms.DataGridViewTextBoxColumn colSchoolYear;
-		public System.Windows.Forms.DataGridViewTextBoxColumn colSubject;
-		public System.Windows.Forms.DataGridViewTextBoxColumn colSemester;
-		public System.Windows.Forms.DataGridViewTextBoxColumn colScore;
-		public System.Windows.Forms.DataGridViewTextBoxColumn colScoreLetter;
+		public System.Windows.Forms.DataGridViewTextBoxColumn ColClass;
+		public System.Windows.Forms.DataGridViewTextBoxColumn ColSchoolYear;
+		public System.Windows.Forms.DataGridViewTextBoxColumn ColSubject;
+		public System.Windows.Forms.DataGridViewTextBoxColumn ColSemester;
+		public System.Windows.Forms.DataGridViewTextBoxColumn ColScore;
+		public System.Windows.Forms.DataGridViewTextBoxColumn ColScoreLetter;
 		public System.Windows.Forms.DataGridViewTextBoxColumn GdvClass;
 		public System.Windows.Forms.DataGridViewTextBoxColumn GdvSchoolYear;
 		public System.Windows.Forms.DataGridViewTextBoxColumn GdvSubject;

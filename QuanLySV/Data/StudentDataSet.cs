@@ -9,8 +9,8 @@ namespace QuanLySV.Data
 	public sealed class StudentDataSet
 	{
 		// ── Singleton ─────────────────────────────────────────────────
-		private static readonly StudentDataSet _instance = new StudentDataSet();
-		public static StudentDataSet Instance { get { return _instance; } }
+		private static readonly StudentDataSet _Instance = new StudentDataSet();
+		public static StudentDataSet Instance { get { return _Instance; } }
 
 		// ── Core objects ──────────────────────────────────────────────
 		public DataTable StudentTable { get; private set; }
@@ -18,8 +18,8 @@ namespace QuanLySV.Data
 		public BindingSource BindingSource { get; private set; }
 
 		// ── Internal adapter ──────────────────────────────────────────
-		private readonly StudentAdapter _adapter = new StudentAdapter();
-		public StudentAdapter Adapter { get { return _adapter; } }
+		private readonly StudentAdapter _Adapter = new StudentAdapter();
+		public StudentAdapter Adapter { get { return _Adapter; } }
 
 		// ── Constructor ───────────────────────────────────────────────
 		private StudentDataSet()
@@ -59,7 +59,7 @@ namespace QuanLySV.Data
 
 		public void Fill(int status = -1, int sex = -1)
 		{
-			_adapter.Fill(StudentTable, status, sex);
+			_Adapter.Fill(StudentTable, status, sex);
 		}
 
 		// =============================================
@@ -68,7 +68,7 @@ namespace QuanLySV.Data
 		public SaveResult SaveAll()
 		{
 			DataTable changes = StudentTable.GetChanges();
-			SaveResult result = _adapter.SaveChanges(changes);
+			SaveResult result = _Adapter.SaveChanges(changes);
 
 			if (result.HasSuccess)
 			{
@@ -106,15 +106,15 @@ namespace QuanLySV.Data
 
 		public void CancelPendingRow()
 		{
-			try
+			if (BindingSource != null)
 			{
 				BindingSource.CancelEdit();
 			}
-			catch { }
 
+			DataRow row = null;
 			for (int i = StudentTable.Rows.Count - 1; i >= 0; i--)
 			{
-				DataRow row = StudentTable.Rows[i];
+				row = StudentTable.Rows[i];
 				if (row.RowState == DataRowState.Added)
 				{
 					if (row["STUDENTID"] == DBNull.Value || string.IsNullOrWhiteSpace(row["STUDENTID"].ToString()))
@@ -128,7 +128,10 @@ namespace QuanLySV.Data
 		public bool NavigateTo(string studentId)
 		{
 			DataRow found = StudentTable.Rows.Find(studentId);
-			if (found == null) return false;
+			if (found == null)
+			{
+				return false;
+			}
 
 			DataView view = (DataView)BindingSource.List;
 			for (int i = 0; i < view.Count; i++)

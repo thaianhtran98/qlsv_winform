@@ -21,10 +21,10 @@ namespace QuanLySV.Controls
 		private const int COL_SEMESTER = 3;
 		private const int COL_SCORE = 4;
 		private const int COL_SCORE_LETER = 5;
-		private string _studentId = string.Empty;
-		private StudentAcademic _currentAcademic = null;
-		private bool _isAddAcademic = false;
-		private readonly List<StudentAcademic> _academicList = new List<StudentAcademic>();
+		private string StudentId = string.Empty;
+		private StudentAcademic CurrentAcademic = null;
+		private bool IsAddAcademic = false;
+		private readonly List<StudentAcademic> AcademicList = new List<StudentAcademic>();
 
 		public UcStudentAcademic()
 		{
@@ -53,7 +53,7 @@ namespace QuanLySV.Controls
 
 		public void LoadData(string studentId)
 		{
-			_studentId = studentId;
+			StudentId = studentId;
 
 			// Ensure references are loaded (run at runtime, not in constructor)
 			if (ReferenceDataSet.Instance.ClassTable.Rows.Count == 0)
@@ -61,14 +61,14 @@ namespace QuanLySV.Controls
 				ReferenceDataSet.Instance.FillAll();
 			}
 
-			FillAcademicList(_studentId);
+			FillAcademicList(StudentId);
 			ShowAcademicForm(false);
 			ResetAcademicForm();
 		}
 
 		public void ClearData()
 		{
-			_studentId = string.Empty;
+			StudentId = string.Empty;
 			StudentAcademicDataSet.Instance.ClearStudentAcademic();
 			DgvAcademic.Rows.Clear();
 			ShowAcademicForm(false);
@@ -141,7 +141,10 @@ namespace QuanLySV.Controls
 
 		private StudentAcademic GetAcademicListItem(int rowIndex)
 		{
-			if (rowIndex < 0 || rowIndex >= DgvAcademic.Rows.Count) return null;
+			if (rowIndex < 0 || rowIndex >= DgvAcademic.Rows.Count)
+			{
+				return null;
+			}
 			return DgvAcademic.Rows[rowIndex].Tag as StudentAcademic;
 		}
 
@@ -182,7 +185,7 @@ namespace QuanLySV.Controls
 		{
 			DgvAcademic.ClearSelection();
 			DgvAcademic.CurrentCell = null;
-			_currentAcademic = null;
+			CurrentAcademic = null;
 
 			BtnEditAcademic.Enabled = false;
 			BtnDeleteAcademic.Enabled = false;
@@ -214,22 +217,22 @@ namespace QuanLySV.Controls
 
 			if (has)
 			{
-				_currentAcademic = GetAcademicListItem(DgvAcademic.SelectedRows[0].Index);
+				CurrentAcademic = GetAcademicListItem(DgvAcademic.SelectedRows[0].Index);
 			}
 		}
 
 		private void BtnAddAcademic_Click(object sender, EventArgs e)
 		{
-			if (string.IsNullOrWhiteSpace(_studentId))
+			if (string.IsNullOrWhiteSpace(StudentId))
 			{
 				MessageBox.Show("Vui lòng nhập mã sinh viên trước khi thêm thông tin học tập.",
 				    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
 
-			_isAddAcademic = true;
+			IsAddAcademic = true;
 			LblFormName.Text = "Thêm thông tin học tập";
-			_currentAcademic = null;
+			CurrentAcademic = null;
 			ResetAcademicForm();
 			ShowAcademicForm(true);
 		}
@@ -237,7 +240,7 @@ namespace QuanLySV.Controls
 		public bool SaveAcademicsToDb(string studentId, out string errorMessage)
 		{
 			errorMessage = null;
-			_studentId = studentId;
+			StudentId = studentId;
 
 			StudentAcademic ac = null;
 			bool ok = false;
@@ -268,23 +271,23 @@ namespace QuanLySV.Controls
 			}
 
 			StudentAcademicDataSet ds = StudentAcademicDataSet.Instance;
-			ds.FillStudentAcademic(_studentId);
+			ds.FillStudentAcademic(StudentId);
 
-			FillAcademicList(_studentId);
+			FillAcademicList(StudentId);
 			ShowAcademicForm(false);
 			return true;
 		}
 
 		private void BtnSaveToDb_Click(object sender, EventArgs e)
 		{
-			if (string.IsNullOrWhiteSpace(_studentId))
+			if (string.IsNullOrWhiteSpace(StudentId))
 			{
 				MessageBox.Show("Vui lòng chọn hoặc lưu sinh viên trước khi lưu thông tin học tập.",
 				    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
 
-			if (SaveAcademicsToDb(_studentId, out string errorMessage))
+			if (SaveAcademicsToDb(StudentId, out string errorMessage))
 			{
 				MessageBox.Show("Lưu thông tin học tập vào CSDL thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
@@ -296,24 +299,24 @@ namespace QuanLySV.Controls
 
 		private void BtnEditAcademic_Click(object sender, EventArgs e)
 		{
-			if (_currentAcademic == null) return;
-			_isAddAcademic = false;
+			if (CurrentAcademic == null) return;
+			IsAddAcademic = false;
 			LblFormName.Text = "Sửa thông tin học tập";
-			PopulateAcademicForm(_currentAcademic);
+			PopulateAcademicForm(CurrentAcademic);
 			ShowAcademicForm(true);
 		}
 
 		private void BtnDeleteAcademic_Click(object sender, EventArgs e)
 		{
-			if (_currentAcademic == null) return;
+			if (CurrentAcademic == null) return;
 
 			if (MessageBox.Show("Bạn có chắc muốn xóa bản ghi học tập này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
 
-			if (_currentAcademic.AcademicId <= 0)
+			if (CurrentAcademic.AcademicId <= 0)
 			{
 				StudentAcademicDataSet ds = StudentAcademicDataSet.Instance;
 				DataRow row = null;
-				string currentIdStr = _currentAcademic.AcademicId.ToString();
+				string currentIdStr = CurrentAcademic.AcademicId.ToString();
 				for (int i = ds.StudentAcademicTable.Rows.Count - 1; i >= 0; i--)
 				{
 					row = ds.StudentAcademicTable.Rows[i];
@@ -324,14 +327,14 @@ namespace QuanLySV.Controls
 						break;
 					}
 				}
-				FillAcademicList(_studentId);
+				FillAcademicList(StudentId);
 				return;
 			}
 
-			bool ok = AcademicService.DeleteStudentAcademic(_currentAcademic.AcademicId);
+			bool ok = AcademicService.DeleteStudentAcademic(CurrentAcademic.AcademicId);
 			if (ok)
 			{
-				FillAcademicList(_studentId);
+				FillAcademicList(StudentId);
 			}
 			else 
 			{ 
@@ -341,7 +344,7 @@ namespace QuanLySV.Controls
 
 		private void BtnSaveTempAcademic_Click(object sender, EventArgs e)
 		{
-			if (string.IsNullOrWhiteSpace(_studentId))
+			if (string.IsNullOrWhiteSpace(StudentId))
 			{
 				MessageBox.Show("Vui lòng chọn hoặc lưu sinh viên trước khi thêm thông tin học tập.",
 				    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -370,13 +373,13 @@ namespace QuanLySV.Controls
 
 			StudentAcademicDataSet ds = StudentAcademicDataSet.Instance;
 
-			if (_isAddAcademic)
+			if (IsAddAcademic)
 			{
 				ds.AddNewRow();
 			} 
 			else
 			{
-				bool found = ds.NavigateTo(_currentAcademic.AcademicId);
+				bool found = ds.NavigateTo(CurrentAcademic.AcademicId);
 				if (!found)
 				{
 					MessageBox.Show("Không tìm thấy dữ liệu. Vui lòng refresh.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -388,7 +391,7 @@ namespace QuanLySV.Controls
 			if (row != null)
 			{
 				row.BeginEdit();
-				row["STUDENTID"] = _studentId;
+				row["STUDENTID"] = StudentId;
 				row["CLASSID"] = CbxClass.SelectedValue.ToString();
 				row["CLASSNAME"] = CbxClass.Text;
 				row["SCHOOLYEARID"] = CbxSchoolYear.SelectedValue.ToString();
@@ -404,7 +407,7 @@ namespace QuanLySV.Controls
 			}
 			ds.BindingSource.EndEdit();
 
-			FillAcademicList(_studentId);
+			FillAcademicList(StudentId);
 			ShowAcademicForm(false);
 			ResetAcademicForm();
 			MessageBox.Show("Đã lưu tạm thông tin học tập. Hãy nhấn 'Lưu vào DB' để lưu vĩnh viễn.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
